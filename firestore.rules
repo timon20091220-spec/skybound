@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function validRecord(course) {
+      return request.resource.data is map
+        && course in ['easy','rapid']
+        && request.resource.data.course in ['easy','rapid']
+        && request.resource.data.course == course
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() >= 1
+        && request.resource.data.nickname.size() <= 20
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.timeMs is int
+        && request.resource.data.timeMs >= 1
+        && request.resource.data.timeMs <= 86400000
+        && request.resource.data.falls is int
+        && request.resource.data.falls >= 0
+        && request.resource.data.falls <= 10000
+        && request.resource.data.coins is int
+        && request.resource.data.coins >= 0
+        && request.resource.data.coins <= 10000
+        && request.resource.data.checkpoints is int
+        && request.resource.data.checkpoints >= 1
+        && request.resource.data.checkpoints <= 100
+        && request.resource.data.courseVersion is string
+        && request.resource.data.scoreMs is int
+        && request.resource.data.scoreMs >= 1
+        && request.resource.data.scoreMs <= 116400000
+        && request.resource.data.scoreMs == request.resource.data.timeMs + request.resource.data.falls * 3000;
+    }
+
+    match /rankings/{version}/{course}/scores/{uid} {
+      allow read, list: if true;
+      allow create: if signedIn() && uid == request.auth.uid && validRecord(course);
+      allow update: if signedIn() && uid == request.auth.uid && validRecord(course)
+                    && request.resource.data.scoreMs < resource.data.scoreMs;
+      allow delete: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if signedIn() && uid == request.auth.uid
+                    && request.resource.data.nickname is string
+                    && request.resource.data.nickname.size() >= 1
+                    && request.resource.data.nickname.size() <= 20;
+      allow update: if signedIn() && uid == request.auth.uid
+                    && request.resource.data.nickname is string
+                    && request.resource.data.nickname.size() >= 1
+                    && request.resource.data.nickname.size() <= 20;
+      allow delete: if false;
+    }
+  }
+}

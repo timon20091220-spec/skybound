@@ -60,7 +60,7 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 </div>
 <div id="checkpointCelebration" class="checkpoint-celebration" role="status">체크포인트</div><div id="joystick" hidden><div id="stick"></div></div><div id="respawnVeil"></div><div id="toast" class="toast" role="status"></div>
 <section id="pauseScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#pause"/></svg></div><div class="eyebrow">TAKE A BREATHER</div><h2>잠깐, 구름 구경.</h2><p>진행 상황은 그대로입니다.<br>로비로 돌아가도 이어서 할 수 있습니다.</p><button id="resumeBtn" class="primary">계속하기<svg><use href="#play"/></svg></button><button id="pausePracticeReturnBtn" class="secondary" hidden>연습 종료 · 게임으로 돌아가기</button><button id="pauseCourseBtn" class="secondary">현재 구역 연습</button><button id="settingsBtn" class="secondary">설정</button><button id="homeBtn" class="text-button">로비로 돌아가기</button></div></section>
-<section id="settingsScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">SETTINGS</div><h2>설정</h2><button id="myBtn" class="secondary">My · 내 기록</button><button id="helpBtn" class="secondary">조작 방법</button><button id="pauseSound" class="secondary">소리 켜기</button><button id="closeSettingsBtn" class="primary">돌아가기</button></div></section>
+ <section id="settingsScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">SETTINGS</div><h2>설정</h2><button id="myBtn" class="secondary">My · 내 기록</button><button id="helpBtn" class="secondary">조작 방법</button><button id="pauseSound" class="secondary">소리 켜기</button><button id="settingsLogoutBtn" class="secondary">로그아웃</button><button id="closeSettingsBtn" class="primary">돌아가기</button></div></section>
 <section id="mechanicScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">MECHANIC LAB</div><h2 id="mechanicTitle"></h2><p id="mechanicDescription" class="mechanic-description"></p><p class="tiny">전용 연습장에서 반복해서 익혀보세요.<br>모험 진행과 보석은 바뀌지 않습니다.</p><button id="mechanicStartBtn" class="primary">연습장 입장</button><button id="mechanicBackBtn" class="secondary">연습 목록으로</button></div></section>
 <section id="helpScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#help"/></svg></div><div class="eyebrow">HOW TO PLAY</div><h2>가볍게, 한 번 더.</h2><ul class="help-list"><li><svg><use href="#move"/></svg><span class="desktop-only">WASD 또는 방향키로 이동합니다.<br>마우스를 드래그하면 시점이 회전합니다.</span><span class="touch-only">화면 왼쪽을 드래그해 이동합니다.<br>오른쪽을 드래그하면 시점이 회전합니다.</span></li><li><svg><use href="#jump"/></svg><span>점프 버튼 또는 Space로 점프합니다.<br>3구역부터 공중에서 한 번 더 눌러 2단 점프하세요.<br>천장 아래에서는 1단 점프만 가능합니다.</span></li><li><svg><use href="#flag"/></svg><span>깃발이 있는 체크포인트 14곳을 통과한 뒤<br>마지막 게이트에 도착하면 완료입니다.</span></li><li><svg><use href="#return"/></svg><span>떨어지면 체크포인트에서 다시 시작합니다.<br>금이 간 발판에서는 오래 머물 수 없습니다.</span></li><li><svg><use href="#arrow"/></svg><span>정면이 막히면 화살표 쪽으로 옆 점프하세요.<br>옆 발판이 없는 곳은 2단 점프하며 화면을 돌려<br>벽 뒤 발판에 착지하세요.</span></li><li><svg><use href="#gem"/></svg><span>11·13구역에서 길을 고릅니다.<br>타원형 A/B 코스는 난이도와 보상이 같습니다.<br>각 코스 보석 5개 · 중복 획득은 불가합니다.<br>10구역 오른쪽에는 모든 기믹을 활용하는<br>31단계 보석 10개 도전이 있습니다.<br>이번 구간 보석은 죽으면 취소되고,<br>다음 체크포인트에 도착하면 확정됩니다.<br>특별 코스의 보석 10개는 획득 즉시 확정됩니다.</span></li></ul><button id="closeHelpBtn" class="primary">알겠습니다<svg><use href="#check"/></svg></button></div></section>
 <section id="resultScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#flag"/></svg></div><div class="eyebrow">COURSE COMPLETE</div><h2>하늘 끝에 도착!</h2><p>모든 체크포인트를 지나 코스를 완주했습니다.</p><div class="result-time" id="resultTime">00:00.0</div><div class="result-label">플레이 시간</div><div class="score-caption" hidden>개인 시간 기록 <strong id="resultScore"></strong><small>재도전 1회당 +3초</small></div><span id="newRecord" hidden>NEW PERSONAL BEST</span><div class="result-stats"><div><span>황금 조각</span><strong id="resultCoins">0 / 60</strong></div><div><span>죽은 횟수</span><strong id="resultFalls">0</strong></div><div><span>체크포인트</span><strong>14 / 14</strong></div></div><p id="resultPlayer"></p><p id="submitStatus" class="rank-status" role="status"></p><button id="resultRankBtn" class="secondary">기록 보기</button><button id="retryBtn" class="primary result-retry">기록에 다시 도전<svg><use href="#arrow"/></svg></button><button id="resultHomeBtn" class="secondary">로비로 돌아가기</button></div></section>
@@ -743,8 +743,9 @@ class SkyRanking{
   async _services(){
     this._requireConfig();
     if(!this._servicesPromise)this._servicesPromise=this._loadSdk().then(sdk=>{
-      const app=sdk.getApps().find(candidate=>candidate.name===APP_NAME)||sdk.initializeApp(this.config,APP_NAME);
-      return {sdk,auth:sdk.getAuth(app),db:sdk.getFirestore(app)};
+       const app=sdk.getApps().find(candidate=>candidate.name===APP_NAME)||sdk.initializeApp(this.config,APP_NAME),auth=sdk.getAuth(app);
+       await sdk.setPersistence(auth,sdk.browserLocalPersistence);
+       return {sdk,auth,db:sdk.getFirestore(app)};
     }).catch(error=>{this._servicesPromise=null;throw serviceError(error);});
     return this._servicesPromise;
   }
@@ -758,6 +759,11 @@ class SkyRanking{
     provider.setCustomParameters({prompt:'select_account'});
     const result=await sdk.signInWithPopup(auth,provider);
     this.localMode=false;this._uid=result.user.uid;return result.user;
+  }
+  async restoreSession(){
+    if(!this.configured)return null;
+    const {sdk,auth}=await this._services();
+    return new Promise(resolve=>{const stop=sdk.onAuthStateChanged(auth,user=>{stop();if(user){this.localMode=false;this._uid=user.uid;}resolve(user);});});
   }
   async getNickname(fallback=''){
     if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
@@ -1067,6 +1073,7 @@ $('nicknameForm').addEventListener('submit',async e=>{
   try{nickname=await rankings.setNickname(name);writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · 로그아웃';setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
 });
  async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('welcome');}catch(error){toast(authError(error));}finally{authBusy=false;}}
+ async function restoreLogin(){try{const user=await rankings.restoreSession();if(user&&!session)await selectAccount(user.uid,false,user.displayName||'');}catch(error){console.warn('Session restore unavailable',error);}}
 $('enterGameBtn').addEventListener('click',()=>setMode('login'));
 $('nicknameBack').addEventListener('click',exitAccount);$('accountBtn').addEventListener('click',exitAccount);
 function openCourse(){
@@ -1077,7 +1084,7 @@ function openCourse(){
 }
 function practiceTab(mechanic){$('zoneList').hidden=mechanic;$('mechanicList').hidden=!mechanic;$('zoneTab').setAttribute('aria-selected',String(!mechanic));$('mechanicTab').setAttribute('aria-selected',String(mechanic));}
 function openSettings(){settingsReturn=mode;setMode('settings');}
-$('settingsBtn').addEventListener('click',openSettings);$('lobbySettingsBtn').addEventListener('click',openSettings);$('closeSettingsBtn').addEventListener('click',()=>setMode(settingsReturn));
+ $('settingsBtn').addEventListener('click',openSettings);$('lobbySettingsBtn').addEventListener('click',openSettings);$('closeSettingsBtn').addEventListener('click',()=>setMode(settingsReturn));$('settingsLogoutBtn').addEventListener('click',exitAccount);
 $('zoneTab').addEventListener('click',()=>practiceTab(false));$('mechanicTab').addEventListener('click',()=>practiceTab(true));$('mechanicStartBtn').addEventListener('click',()=>beginMechanic(selectedMechanic));$('mechanicBackBtn').addEventListener('click',()=>{openCourse();practiceTab(true);});
 $('myBtn').addEventListener('click',openMy);$('closeMyBtn').addEventListener('click',()=>setMode(myReturn));
 $('pausePracticeReturnBtn').addEventListener('click',returnToGame);$('practiceReturnBtn').addEventListener('click',returnToGame);$('pauseCourseBtn').addEventListener('click',()=>{unlockStage(run.stage);if(run.practiceMechanic)beginMechanic(run.practiceMechanic);else beginPractice(run.practiceStage??run.stage);});$('practiceRetryBtn').addEventListener('click',()=>run.practiceMechanic?beginMechanic(run.practiceMechanic):beginPractice(run.practiceStage));$('practiceChooseBtn').addEventListener('click',openCourse);$('practiceHomeBtn').addEventListener('click',goHome);
@@ -1106,7 +1113,8 @@ document.querySelectorAll('[data-cp]').forEach(e=>e.remove());for(const id of ru
 syncSound();syncLobby();
  $('loginForm').hidden=$('createAccountBtn').hidden=!rankings.configured;if(!rankings.configured)$('loginExplain').textContent='온라인 계정 연결이 필요합니다. Google 또는 이메일 계정으로 로그인해주세요.';
 try{renderer=new SkyRenderer(canvas);}catch(error){console.error('3D renderer:',error);setMode('error');}
-if(renderer)setMode('welcome');
+ if(renderer)setMode('welcome');
+ restoreLogin();
 requestAnimationFrame(frame);
 
 </script>

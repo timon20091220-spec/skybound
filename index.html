@@ -19,7 +19,7 @@
 @media(max-height:730px) and (max-width:760px){.hero{min-height:480px}.start-block{padding-top:45px}}
 @media(max-height:500px) and (min-width:650px){.hero{min-height:0}.start-block{padding-top:0}.save-summary{font-size:9px;padding:5px 10px;margin-bottom:6px}.start-block>.text-button{padding-top:6px}.start-block .primary{height:39px}.start-block .secondary{height:32px}}
 
-.auth-form{display:grid;gap:12px;text-align:left}.auth-form label{font-size:11px;color:var(--muted)}.auth-form input{width:100%;font:inherit;padding:13px;border:1px solid #bfd3c8;border-radius:10px;background:#fff;color:var(--ink)}.auth-form input:focus{outline:2px solid var(--teal)}.auth-form .primary{margin-top:8px}#accountBtn{display:block;margin:auto}#resultPlayer{font-weight:700;color:var(--teal)}
+.auth-form{display:grid;gap:12px;text-align:left}.auth-form label{font-size:11px;color:var(--muted)}.auth-form input{width:100%;font:inherit;padding:13px;border:1px solid #bfd3c8;border-radius:10px;background:#fff;color:var(--ink)}.auth-form input:focus{outline:2px solid var(--teal)}.auth-form .primary{margin-top:8px}#accountBtn{display:block;margin:auto}#resultPlayer{font-weight:700;color:var(--teal)}.toast{position:absolute;z-index:40;top:11%;left:50%;max-width:min(420px,calc(100% - 32px));padding:12px 16px;border-radius:12px;background:#183c42e8;color:#fff;text-align:center;font-size:12px;line-height:1.5;pointer-events:none;opacity:0;transform:translate(-50%,-10px);transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translate(-50%,0)}
 .zone-item{text-align:left;cursor:pointer}.zone-item:hover{border-color:var(--teal);background:#e3f0e6}.my-table-wrap{overflow:auto}.my-table{width:100%;border-collapse:collapse;font-size:11px}.my-table th,.my-table td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.my-table th:first-child,.my-table td:first-child{text-align:left}.my-table th{color:var(--muted);font-weight:500}
 
 .is-phone #cameraBtn{display:none!important}
@@ -68,10 +68,8 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 <section id="rankingScreen" class="screen overlay" hidden><div class="panel wide-panel ranking-panel"><div class="panel-head"><div><div class="eyebrow"><span id="rankingScope">SKYBOUND / RANKING</span></div><h2>가장 빠른 도약</h2></div><button id="closeRankBtn" class="icon-button" aria-label="랭킹 닫기"><svg><use href="#close"/></svg></button></div><div class="rank-meta"><span>완주 기록 · TOP 50</span><button id="refreshRankBtn" class="icon-button" aria-label="랭킹 새로고침"><svg><use href="#refresh"/></svg></button></div><p class="rank-explain">플레이 시간 + 재도전 1회당 3초<br>기록이 짧을수록 높은 순위입니다.</p><div id="rankingStatus" class="rank-status" role="status"></div><ol id="rankingList" class="ranking-list"></ol><div id="pendingBox" class="pending-box" hidden><span>완주 기록을 자동 등록하고 있습니다. 연결이 돌아오면 재시도합니다.</span><div id="pendingStatus" class="rank-status" role="status"></div></div></div></section>
 <section id="loginScreen" class="screen overlay" hidden><div class="panel">
 <div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 기록은 자동으로 등록됩니다.</p>
-<form id="loginForm" class="auth-form"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="254" placeholder="you@example.com">
-<label for="loginPassword">비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="비밀번호">
-<button id="loginSubmit" class="primary" type="submit">로그인</button></form><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
-<button id="createAccountBtn" class="text-button">처음이신가요? 계정 만들기</button><button id="guestBtn" class="secondary">이 기기에서 게스트로 플레이</button><p class="tiny">게스트 기록은 이 브라우저에만 저장됩니다.</p>
+<button id="googleBtn" class="primary">Google로 계속하기</button><button id="guestBtn" class="secondary">게스트로 계속하기</button><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
+<p class="tiny">Google과 게스트 모두 닉네임으로 온라인 랭킹에 참여합니다.</p>
 </div></section>
 <section id="nicknameScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">YOUR ADVENTURE</div><h2>닉네임을 정해주세요</h2><p>완주 기록에 이 이름이 표시됩니다.</p><form id="nicknameForm" class="auth-form"><label for="nicknameInput">닉네임 · 1~20자</label><input id="nicknameInput" autocomplete="nickname" maxlength="20" required placeholder="하늘을 달리는 이름"><button id="nicknameSubmit" class="primary" type="submit">이 이름으로 시작</button></form><p id="nicknameStatus" class="rank-status" role="status"></p><button id="nicknameBack" class="text-button">로그인으로 돌아가기</button></div></section>
 <section id="practiceScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">PRACTICE COMPLETE</div><h2 id="practiceTitle">구역 연습 완료</h2><p id="practiceStats"></p><button id="practiceRetryBtn" class="primary">같은 구역 다시 연습</button><button id="practiceChooseBtn" class="secondary">다른 구역 선택</button><button id="practiceReturnBtn" class="secondary" hidden>원래 게임으로 돌아가기</button><button id="practiceHomeBtn" class="text-button">로비로 돌아가기</button></div></section>
@@ -675,11 +673,8 @@ class SkyRenderer{
 }
 if(typeof module!=='undefined')module.exports={SkyMath,SkyRenderer};
 
-// Replace null with the public web-app config copied from your own Firebase project.
-// This file must never contain a service-account credential or private key.
-// To enable online accounts: provide your Firebase web app config, enable Email/Password
-// in Firebase Authentication, and deploy owner-scoped Firestore rules for rankings/{course}/scores/{uid}.
-// No project credentials are bundled; guest mode stores records on this device only.
+// Firebase web-app config is public. Never put a service-account credential or private key here.
+// Enable Google and Anonymous providers in Firebase Authentication before deployment.
 var SKYBOUND_FIREBASE_CONFIG={apiKey:'AIzaSyCFq6XX0P9qGZu5h5Z_OohQUHCkoi22iMA',authDomain:'project-81f0c41a-f274-4ccd-8d8.firebaseapp.com',projectId:'project-81f0c41a-f274-4ccd-8d8',storageBucket:'project-81f0c41a-f274-4ccd-8d8.firebasestorage.app',messagingSenderId:'532390439209',appId:'1:532390439209:web:463f51e6df4caf07ef2f38'};
 
 (function(root){
@@ -738,9 +733,15 @@ class SkyRanking{
     }).catch(error=>{this._servicesPromise=null;throw serviceError(error);});
     return this._servicesPromise;
   }
-  async login(email,password,create=false){
-    const {sdk,auth}=await this._services();
-    const result=await (create?sdk.createUserWithEmailAndPassword:sdk.signInWithEmailAndPassword)(auth,email,password);
+  async loginWithGoogle(){
+    const {sdk,auth}=await this._services(),provider=new sdk.GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    const result=await sdk.signInWithPopup(auth,provider);
+    this.localMode=false;this._uid=result.user.uid;return result.user;
+  }
+  async loginAsGuest(){
+    if(!this.configured){let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}this.useGuest(uid);return {uid,displayName:''};}
+    const {sdk,auth}=await this._services(),result=await sdk.signInAnonymously(auth);
     this.localMode=false;this._uid=result.user.uid;return result.user;
   }
   useGuest(uid){this.localMode=true;this._uid=uid;}
@@ -763,6 +764,12 @@ class SkyRanking{
       const snapshot=await sdk.getDocs(sdk.query(ref,sdk.orderBy('scoreMs','asc'),sdk.limit(50)));
       return snapshot.docs.map(doc=>publicRecord(doc.data()));
     }catch(error){throw serviceError(error);}
+  }
+  subscribeTop(onEntries,onError){
+    if(this.localMode){onEntries(this.localScores().sort((a,b)=>a.scoreMs-b.scoreMs).slice(0,50));return ()=>{};}
+    let stopped=false,unsubscribe=()=>{stopped=true;};
+    this._services().then(({sdk,db})=>{if(stopped)return;const ref=sdk.collection(db,'rankings',COURSE_VERSION,'scores');unsubscribe=sdk.onSnapshot(sdk.query(ref,sdk.orderBy('scoreMs','asc'),sdk.limit(50)),snapshot=>onEntries(snapshot.docs.map(doc=>publicRecord(doc.data()))),error=>onError(serviceError(error)));}).catch(error=>onError(error));
+    return ()=>{stopped=true;unsubscribe();};
   }
   async submit(input){
     const candidate=validateRecord(input);
@@ -824,14 +831,14 @@ function writeLocal(key,value){try{localStorage.setItem(key,JSON.stringify(value
 function removeLocal(key){try{localStorage.removeItem(key);}catch{}}
 let practiceReturn=null,settingsReturn='lobby',selectedMechanic=null;
 let MY_KEY='',myReturn='lobby',courseReturn='lobby',profile=null;
-let savedRun=null,pendingResult=null,nickname='',session=null,accountCreating=false,authBusy=false,retryTimer=null,retryDelay=2000;
+let savedRun=null,pendingResult=null,nickname='',session=null,authBusy=false,retryTimer=null,retryDelay=2000,rankingUnsubscribe=null;
 try{muted=localStorage.getItem('skybound-muted-v1')!=='false';}catch{}
 const rankings=new SkyRanking(globalThis.SKYBOUND_FIREBASE_CONFIG);
 function timeText(t){const n=Math.floor(Math.max(0,t)*10),m=Math.floor(n/600),sec=Math.floor(n/10)%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')+'.'+n%10;}
 function sound(kind){if(muted)return;try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();if(audioContext.state==='suspended')audioContext.resume();const configs={headBump:[150,55,.13,.11],jump:[250,430,.10,.055],doubleJump:[370,620,.13,.04],coin:[980,1320,.15,.03],checkpoint:[510,880,.33,.06],fall:[230,155,.17,.025],finish:[620,1240,.6,.05],click:[450,560,.075,.035]};if(!configs[kind])return;const [a,b,duration,volume]=configs[kind],now=audioContext.currentTime,o=audioContext.createOscillator(),gain=audioContext.createGain();o.type='sine';o.frequency.setValueAtTime(a,now);o.frequency.exponentialRampToValueAtTime(b,now+duration);gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.001,now+duration);o.connect(gain);gain.connect(audioContext.destination);o.start(now);o.stop(now+duration+.01);}catch{}}
 function syncSound(){for(const id of ['soundBtn','gameSound']){$(id).innerHTML='<svg><use href="#'+(muted?'mute':'sound')+'"/></svg>';$(id).setAttribute('aria-label',muted?'소리 켜기':'소리 끄기');}$('pauseSound').textContent=muted?'소리 켜기':'소리 끄기';}
 function toggleSound(){muted=!muted;try{localStorage.setItem('skybound-muted-v1',String(muted));}catch{}syncSound();sound('click');}
-function toast(){}
+function toast(message,duration=2800){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),duration);}
 function clearInput(){lookYawTarget=yaw;lookPitchTarget=pitch;keys.clear();movePointer=lookPointer=null;stickX=stickY=0;$('joystick').hidden=true;run.jumpBuffer=0;}
 
 function setMode(next){
@@ -920,13 +927,10 @@ function frame(now){
 }
 function errorText(error){const messages={AUTH_REQUIRED:'다시 로그인해주세요.',STORAGE_FULL:'브라우저 저장 공간을 사용할 수 없습니다.',CONFIG_MISSING:'온라인 랭킹 연결 준비 중입니다. 완주 기록은 이 기기에 보관됩니다.',INVALID_RECORD:'닉네임과 기록을 확인해주세요. 닉네임은 1~20자입니다.',PERMISSION_DENIED:'랭킹 서버가 기록 저장을 허용하지 않았습니다. 잠시 후 다시 시도해주세요.',AUTH_FAILED:'랭킹 인증에 실패했습니다. 잠시 후 다시 시도해주세요.',OFFLINE:'인터넷 연결을 확인해주세요. 저장된 기록은 다시 등록할 수 있습니다.',TIMEOUT:'응답이 늦어지고 있습니다. 잠시 후 다시 시도해주세요.'};return messages[error?.code]||'랭킹 서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.';}
 function timeout(promise){let handle;return Promise.race([promise,new Promise((_,reject)=>{handle=setTimeout(()=>{const e=new Error('timeout');e.code='TIMEOUT';reject(e);},14000);})]).finally(()=>clearTimeout(handle));}
-async function loadRanking(){
- const request=++rankRequest;$('rankingList').replaceChildren();$('rankingStatus').textContent='기록을 불러오는 중입니다…';$('refreshRankBtn').disabled=true;
- try{const entries=await timeout(rankings.getTop());if(request!==rankRequest)return;$('rankingStatus').textContent=entries.length?'':'아직 등록된 완주 기록이 없습니다. 첫 번째 주인공이 되어보세요.';
-  entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),time=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=String(entry.nickname||'도약자');detail.textContent='재도전 '+entry.falls+'회 · 조각 '+entry.coins+'개';time.className='rank-time';time.textContent=timeText(entry.scoreMs/1000);person.append(name,detail);li.append(number,person,time);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});
- }catch(error){if(request===rankRequest)$('rankingStatus').textContent=errorText(error);}finally{if(request===rankRequest)$('refreshRankBtn').disabled=false;}
-}
-function openRanking(){rankReturn=mode==='finished'?'finished':'lobby';setMode('ranking');$('rankingScope').textContent=rankings.localMode?'SKYBOUND / 이 기기 랭킹':'SKYBOUND / 온라인 랭킹';$('pendingBox').hidden=!pendingResult;$('pendingStatus').textContent=pendingResult?'자동 등록 대기 중':'';loadRanking();if(pendingResult)submitPending();}
+function renderRanking(entries){$('rankingList').replaceChildren();$('rankingStatus').textContent=entries.length?'':'아직 등록된 완주 기록이 없습니다. 첫 번째 주인공이 되어보세요.';entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),time=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=String(entry.nickname||'도약자');detail.textContent='재도전 '+entry.falls+'회 · 조각 '+entry.coins+'개';time.className='rank-time';time.textContent=timeText(entry.scoreMs/1000);person.append(name,detail);li.append(number,person,time);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});}
+function loadRanking(){rankingUnsubscribe?.();const request=++rankRequest;$('rankingList').replaceChildren();$('rankingStatus').textContent='실시간 기록을 연결하는 중입니다…';$('refreshRankBtn').disabled=true;rankingUnsubscribe=rankings.subscribeTop(entries=>{if(request!==rankRequest)return;renderRanking(entries);$('refreshRankBtn').disabled=false;},error=>{if(request===rankRequest){$('rankingStatus').textContent=errorText(error);$('refreshRankBtn').disabled=false;}});}
+function closeRanking(){rankRequest++;rankingUnsubscribe?.();rankingUnsubscribe=null;setMode(rankReturn);}
+function openRanking(){rankReturn=mode==='finished'?'finished':'lobby';setMode('ranking');$('rankingScope').textContent=rankings.localMode?'SKYBOUND / 이 기기 랭킹':'SKYBOUND / 실시간 온라인 랭킹';$('pendingBox').hidden=!pendingResult;$('pendingStatus').textContent=pendingResult?'자동 등록 대기 중':'';loadRanking();if(pendingResult)submitPending();}
 async function submitPending(){
  if(submitting||!pendingResult||!session||pendingResult.owner!==session.key)return;
  clearTimeout(retryTimer);retryTimer=null;const current=pendingResult,pendingKey=PENDING_KEY,owner=session.key;
@@ -981,8 +985,8 @@ function finishPractice(){
  if(profile&&!run.practiceMechanic&&run.elapsed>0&&(profile.practiceBest[stage]===null||run.elapsed<profile.practiceBest[stage])){profile.practiceBest[stage]=run.elapsed;saveProfile();}
  $('practiceTitle').textContent=run.practiceMechanic?MECHANICS.find(m=>m.type===run.practiceMechanic).name+' 연습 완료':(stage+1)+'구역 · '+ParkourCore.ZONES[stage].name;$('practiceStats').textContent='연습 완료 · '+timeText(run.elapsed)+' · 데스 '+run.deaths+'회';setMode('practiceResult');sound('checkpoint');
 }
-function selectAccount(uid,local,displayName=''){
- const key=(local?'guest:':'online:')+uid;session={uid,key,local};MY_KEY='skybound-my-v1:'+key;loadProfile();
+ function selectAccount(uid,guest,displayName=''){
+  const key=(guest?'guest:':'google:')+uid;session={uid,key,guest};MY_KEY='skybound-my-v1:'+key;loadProfile();
  SAVE_KEY='skybound-run-v9:'+key;BEST_KEY='skybound-best-v10:'+key;PENDING_KEY='skybound-pending-v9:'+key;NAME_KEY='skybound-name-v7:'+key;
  savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
  if(savedRun)profile.unlocked=Math.max(profile.unlocked,Math.min(ParkourCore.ZONES.length-1,savedRun.run.visited.length));if(profile.clears)profile.unlocked=ParkourCore.ZONES.length-1;saveProfile();
@@ -991,17 +995,14 @@ function selectAccount(uid,local,displayName=''){
  nickname=readLocal(NAME_KEY,displayName);if(typeof nickname!=='string')nickname='';
  $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
 }
-function authError(error){const code=String(error?.code||'');if(code.includes('invalid-email'))return '이메일 주소를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일입니다. 로그인으로 전환해주세요.';if(code.includes('weak-password'))return '더 강한 비밀번호를 사용해주세요.';if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return '온라인 계정 연결이 아직 준비되지 않았습니다.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
-$('loginForm').addEventListener('submit',async e=>{
- e.preventDefault();if(authBusy||!rankings.configured)return;authBusy=true;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent=accountCreating?'계정을 만드는 중입니다…':'로그인 중입니다…';
- try{const user=await rankings.login($('loginEmail').value.trim(),$('loginPassword').value,accountCreating);selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{$('loginPassword').value='';authBusy=false;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}
-});
-$('createAccountBtn').addEventListener('click',()=>{accountCreating=!accountCreating;$('loginSubmit').textContent=accountCreating?'계정 만들기':'로그인';$('loginPassword').autocomplete=accountCreating?'new-password':'current-password';$('createAccountBtn').textContent=accountCreating?'계정이 있어요 · 로그인':'처음이신가요? 계정 만들기';$('loginStatus').textContent='';});
-$('guestBtn').addEventListener('click',()=>{if(authBusy)return;let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}rankings.useGuest(uid);selectAccount(uid,true);});
+function authError(error){const code=String(error?.code||'');if(code.includes('popup-closed-by-user'))return '로그인 창이 닫혔습니다.';if(code.includes('popup-blocked'))return '팝업이 차단되었습니다. 브라우저 설정을 확인해주세요.';if(code.includes('account-exists-with-different-credential'))return '이 이메일은 다른 로그인 방식으로 이미 사용 중입니다.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return 'Firebase Authentication에서 Google 및 익명 로그인을 활성화해주세요.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
+async function signIn(kind){if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('guestBtn').disabled=true;$('loginStatus').textContent=kind==='google'?'Google 로그인 창을 여는 중입니다…':'게스트 계정을 만드는 중입니다…';try{const user=kind==='google'?await rankings.loginWithGoogle():await rankings.loginAsGuest();selectAccount(user.uid,kind==='guest',user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('guestBtn').disabled=false;}}
+$('googleBtn').addEventListener('click',()=>signIn('google'));
+$('guestBtn').addEventListener('click',()=>signIn('guest'));
 $('nicknameForm').addEventListener('submit',async e=>{
  e.preventDefault();if(authBusy||!session)return;const name=$('nicknameInput').value.trim();if(!name||name.length>20){$('nicknameStatus').textContent='닉네임을 1~20자로 입력해주세요.';return;}
  authBusy=true;$('nicknameSubmit').disabled=$('nicknameBack').disabled=true;
- try{await rankings.setNickname(name);nickname=name;writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(session.local?'게스트 나가기':'로그아웃');setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
+  try{await rankings.setNickname(name);nickname=name;writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(session.guest?'게스트 나가기':'로그아웃');setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
 });
 async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('login');}catch(error){toast(authError(error));}finally{authBusy=false;}}
 $('nicknameBack').addEventListener('click',exitAccount);$('accountBtn').addEventListener('click',exitAccount);
@@ -1021,11 +1022,11 @@ $('startBtn').addEventListener('click',requestNew);$('continueBtn').addEventList
 $('retryBtn').addEventListener('click',start);$('pauseBtn').addEventListener('click',pause);$('resumeBtn').addEventListener('click',pause);$('homeBtn').addEventListener('click',goHome);$('resultHomeBtn').addEventListener('click',()=>{rankReturn='lobby';goHome();});
 for(const id of ['soundBtn','gameSound','pauseSound'])$(id).addEventListener('click',toggleSound);
 $('helpBtn').addEventListener('click',()=>setMode('help'));$('closeHelpBtn').addEventListener('click',()=>setMode('settings'));$('cameraBtn').addEventListener('click',()=>{yaw=0;pitch=.58;camSnap=true;});$('reloadBtn').addEventListener('click',()=>location.reload());
-$('rankBtn').addEventListener('click',openRanking);$('resultRankBtn').addEventListener('click',openRanking);$('closeRankBtn').addEventListener('click',()=>{rankRequest++;setMode(rankReturn);});$('refreshRankBtn').addEventListener('click',loadRanking);
+$('rankBtn').addEventListener('click',openRanking);$('resultRankBtn').addEventListener('click',openRanking);$('closeRankBtn').addEventListener('click',closeRanking);$('refreshRankBtn').addEventListener('click',loadRanking);
 $('practiceMenuBtn').addEventListener('click',openCourse);$('closeCourseBtn').addEventListener('click',()=>setMode(courseReturn));
 
 $('jumpBtn').addEventListener('pointerdown',e=>{e.preventDefault();if(mode==='playing')run.requestJump();});$('jumpBtn').addEventListener('click',e=>{if(e.detail===0&&mode==='playing')run.requestJump();});
-window.addEventListener('keydown',e=>{if(e.repeat||['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(e.code==='Escape'||e.code==='KeyP'){if(mode==='help')setMode('settings');else if(mode==='settings')setMode(settingsReturn);else if(mode==='mechanic')openCourse();else if(mode==='ranking'){rankRequest++;setMode(rankReturn);}else if(mode==='my')setMode(myReturn);else if(mode==='course')setMode(courseReturn);else if(mode==='new')setMode('lobby');else if(mode==='practiceResult')goHome();else pause();return;}if(mode!=='playing')return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(e.code==='Space')run.requestJump();if(e.code==='KeyR')run.recover(true);if(e.code==='KeyC'){yaw=0;pitch=.58;camSnap=true;}});window.addEventListener('keyup',e=>keys.delete(e.code));
+window.addEventListener('keydown',e=>{if(e.repeat||['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(e.code==='Escape'||e.code==='KeyP'){if(mode==='help')setMode('settings');else if(mode==='settings')setMode(settingsReturn);else if(mode==='mechanic')openCourse();else if(mode==='ranking')closeRanking();else if(mode==='my')setMode(myReturn);else if(mode==='course')setMode(courseReturn);else if(mode==='new')setMode('lobby');else if(mode==='practiceResult')goHome();else pause();return;}if(mode!=='playing')return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(e.code==='Space')run.requestJump();if(e.code==='KeyR')run.recover(true);if(e.code==='KeyC'){yaw=0;pitch=.58;camSnap=true;}});window.addEventListener('keyup',e=>keys.delete(e.code));
 canvas.addEventListener('pointerdown',e=>{if(mode!=='playing'||e.button>0)return;e.preventDefault();try{canvas.setPointerCapture(e.pointerId);}catch{}if(e.pointerType==='touch'&&e.clientX<innerWidth*.48&&movePointer===null){movePointer=e.pointerId;originX=e.clientX;originY=e.clientY;stickX=stickY=0;$('joystick').style.left=originX+'px';$('joystick').style.top=originY+'px';$('joystick').hidden=false;$('stick').style.transform='translate(0,0)';$('moveHint').style.opacity='0';}else if(lookPointer===null){lookPointer=e.pointerId;lookX=e.clientX;lookY=e.clientY;lookYawTarget=yaw;lookPitchTarget=pitch;}});
 canvas.addEventListener('pointermove',e=>{if(e.pointerId===movePointer){const dx=e.clientX-originX,dy=e.clientY-originY,d=Math.max(43,Math.hypot(dx,dy));stickX=dx/d;stickY=dy/d;$('stick').style.transform='translate('+stickX*34+'px,'+stickY*34+'px)';}else if(e.pointerId===lookPointer){if(phone){lookYawTarget+=(e.clientX-lookX)*.0038;lookPitchTarget=clamp(lookPitchTarget+(e.clientY-lookY)*.0028,.30,1.02);}else{yaw+=(e.clientX-lookX)*.005;pitch=clamp(pitch+(e.clientY-lookY)*.004,.28,1.05);}lookX=e.clientX;lookY=e.clientY;}});
 function release(e){if(e.pointerId===movePointer){movePointer=null;stickX=stickY=0;$('joystick').hidden=true;}if(e.pointerId===lookPointer)lookPointer=null;}
@@ -1040,7 +1041,7 @@ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();modeBeforeCont
 canvas.addEventListener('webglcontextrestored',()=>{try{renderer=new SkyRenderer(canvas);camSnap=true;setMode(!session?'login':modeBeforeContextLoss==='nickname'?'nickname':run.status==='practiceFinished'?'practiceResult':run.status==='finished'?'finished':['lobby','ranking','course','new','my'].includes(modeBeforeContextLoss)?'lobby':'paused');}catch{setMode('error');}});
 document.querySelectorAll('[data-cp]').forEach(e=>e.remove());for(const id of run.checkpointIds){const el=document.createElement('i');el.className='progress-dot';el.dataset.cp=id;el.style.left=run.platforms[id].progress*100+'%';document.querySelector('.progress-track').append(el);}
 syncSound();syncLobby();
-$('loginForm').hidden=$('createAccountBtn').hidden=!rankings.configured;if(!rankings.configured)$('loginExplain').textContent='온라인 로그인은 서버 연결 후 사용할 수 있습니다. 지금은 게스트로 닉네임을 정하고 플레이할 수 있으며, 기록은 이 기기에 자동 저장됩니다.';
+if(!rankings.configured){$('googleBtn').hidden=true;$('loginExplain').textContent='온라인 로그인은 Firebase 설정 후 사용할 수 있습니다. 지금은 게스트로 닉네임을 정하고 플레이할 수 있으며, 기록은 이 기기에 자동 저장됩니다.';}
 try{renderer=new SkyRenderer(canvas);}catch(error){console.error('3D renderer:',error);setMode('error');}
 if(renderer)setMode('login');
 requestAnimationFrame(frame);

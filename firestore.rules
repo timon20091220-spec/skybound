@@ -6,11 +6,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function validRecord(course) {
+    function validRecord(version) {
       return request.resource.data is map
-        && course in ['easy','rapid']
-        && request.resource.data.course in ['easy','rapid']
-        && request.resource.data.course == course
+        && version is string
+        && version.size() >= 1
+        && version.size() <= 60
+        && request.resource.data.courseVersion == version
         && request.resource.data.nickname is string
         && request.resource.data.nickname.size() >= 1
         && request.resource.data.nickname.size() <= 20
@@ -25,33 +26,18 @@ service cloud.firestore {
         && request.resource.data.coins >= 0
         && request.resource.data.coins <= 10000
         && request.resource.data.checkpoints is int
-        && request.resource.data.checkpoints >= 1
-        && request.resource.data.checkpoints <= 100
-        && request.resource.data.courseVersion is string
+        && request.resource.data.checkpoints == 14
         && request.resource.data.scoreMs is int
         && request.resource.data.scoreMs >= 1
         && request.resource.data.scoreMs <= 116400000
         && request.resource.data.scoreMs == request.resource.data.timeMs + request.resource.data.falls * 3000;
     }
 
-    match /rankings/{version}/{course}/scores/{uid} {
+    match /rankings/{version}/scores/{uid} {
       allow read, list: if true;
-      allow create: if signedIn() && uid == request.auth.uid && validRecord(course);
-      allow update: if signedIn() && uid == request.auth.uid && validRecord(course)
+      allow create: if signedIn() && uid == request.auth.uid && validRecord(version);
+      allow update: if signedIn() && uid == request.auth.uid && validRecord(version)
                     && request.resource.data.scoreMs < resource.data.scoreMs;
-      allow delete: if false;
-    }
-
-    match /users/{uid} {
-      allow read: if true;
-      allow create: if signedIn() && uid == request.auth.uid
-                    && request.resource.data.nickname is string
-                    && request.resource.data.nickname.size() >= 1
-                    && request.resource.data.nickname.size() <= 20;
-      allow update: if signedIn() && uid == request.auth.uid
-                    && request.resource.data.nickname is string
-                    && request.resource.data.nickname.size() >= 1
-                    && request.resource.data.nickname.size() <= 20;
       allow delete: if false;
     }
   }

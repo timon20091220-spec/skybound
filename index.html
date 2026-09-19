@@ -67,7 +67,7 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 
 <section id="newScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">A FRESH START</div><h2>처음부터 도전할까요?</h2><p>지금 이어갈 수 있는 진행 상황을 지우고<br>첫 번째 구역부터 시작합니다.</p><button id="confirmNewBtn" class="primary">새로 시작하기<svg><use href="#arrow"/></svg></button><button id="cancelNewBtn" class="secondary">돌아가기</button></div></section>
 <section id="courseScreen" class="screen overlay" hidden><div class="panel wide-panel"><div class="panel-head"><div><div class="eyebrow">THE ASCENT</div><h2>연습</h2></div><button id="closeCourseBtn" class="icon-button" aria-label="코스 안내 닫기"><svg><use href="#close"/></svg></button></div><p>클리어했거나 도전 중인 구역을 연습할 수 있습니다. 기믹 연습장에서는 각각의 움직임을 따로 익혀보세요.</p><div class="practice-tabs"><button id="zoneTab" class="secondary">구역 연습</button><button id="mechanicTab" class="secondary">기믹 연습</button></div><div id="zoneList" class="zone-list"></div><div id="mechanicList" class="zone-list" hidden></div></div></section>
-<section id="rankingScreen" class="screen overlay" hidden><div class="panel wide-panel ranking-panel"><div class="panel-head"><div><div class="eyebrow"><span id="rankingScope">SKYBOUND / RANKING</span></div><h2>기록</h2></div><button id="closeRankBtn" class="icon-button" aria-label="기록 닫기"><svg><use href="#close"/></svg></button></div><div class="rank-meta"><span>플레이 중 실시간 반영</span><button id="refreshRankBtn" class="icon-button" aria-label="랭킹 새로고침"><svg><use href="#refresh"/></svg></button></div><p class="rank-explain">조각이 많은 순서로 표시됩니다.<br>동점이면 최고 단계가 높고, 죽은 횟수가 적은 순서입니다.</p><div id="rankingStatus" class="rank-status" role="status"></div><ol id="rankingList" class="ranking-list"></ol><div id="pendingBox" class="pending-box" hidden><span>기록을 자동 갱신하고 있습니다. 연결이 돌아오면 재시도합니다.</span><div id="pendingStatus" class="rank-status" role="status"></div></div></div></section>
+ <section id="rankingScreen" class="screen overlay" hidden><div class="panel wide-panel ranking-panel"><div class="panel-head"><div><div class="eyebrow"><span id="rankingScope">SKYBOUND / RANKING</span></div><h2>기록</h2></div><button id="closeRankBtn" class="icon-button" aria-label="기록 닫기"><svg><use href="#close"/></svg></button></div><div class="rank-meta"><span>플레이 중 실시간 반영</span><button id="refreshRankBtn" class="icon-button" aria-label="랭킹 새로고침"><svg><use href="#refresh"/></svg></button></div><p class="rank-explain">최고 단계 → 플레이 시간 → 조각 → 죽은 횟수 순서로 정렬됩니다.</p><div id="rankingStatus" class="rank-status" role="status"></div><ol id="rankingList" class="ranking-list"></ol><div id="pendingBox" class="pending-box" hidden><span>기록을 자동 갱신하고 있습니다. 연결이 돌아오면 재시도합니다.</span><div id="pendingStatus" class="rank-status" role="status"></div></div></div></section>
 <section id="welcomeScreen" class="screen overlay" hidden><div class="panel welcome-panel"><div class="eyebrow">A LITTLE HIGHER</div><h1>SKY<span>BOUND</span></h1><button id="enterGameBtn" class="primary">게임 시작하기<svg><use href="#play"/></svg></button></div></section>
 <section id="loginScreen" class="screen overlay" hidden><div class="panel">
 <div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 전에도 조각·죽은 횟수·최고 단계가 자동 반영됩니다.</p>
@@ -720,7 +720,7 @@ function validateRecord(input){
   return record;
 }
 function publicRecord(value){return {uid:value.uid,nickname:value.nickname,timeMs:value.timeMs,falls:value.falls,coins:value.coins,deaths:value.deaths,stage:value.stage,completed:value.completed,scoreMs:value.scoreMs};}
-function compareRecords(a,b){return b.coins-a.coins||b.stage-a.stage||a.deaths-b.deaths||String(a.uid).localeCompare(String(b.uid));}
+ function compareRecords(a,b){return b.stage-a.stage||a.timeMs-b.timeMs||b.coins-a.coins||a.deaths-b.deaths||String(a.uid).localeCompare(String(b.uid));}
 function hasConfig(config){return !!config&&typeof config==='object'&&['apiKey','authDomain','projectId','appId'].every(key=>typeof config[key]==='string'&&config[key].trim());}
 async function loadFirebaseSdk(){
   const [app,auth,firestore]=await Promise.all([
@@ -922,7 +922,7 @@ function goHome(){
 function queueLiveRecord(){
  if(!runOwnsSave||run.practiceStage!==null||!session||!nickname)return;
  const stage=Math.min(ParkourCore.ZONES.length,Math.max(run.stage,run.zoneForPlatform(run.platforms[run.maxPlatform]),run.visited.size)+1),completed=run.status==='finished';
- const signature=JSON.stringify([session.key,run.coins,run.deaths,stage,completed]);if(signature===recordSignature)return;recordSignature=signature;
+  const signature=JSON.stringify([session.key,run.coins,run.deaths,stage,completed,completed?Math.round(run.elapsed*1000):0]);if(signature===recordSignature)return;recordSignature=signature;
  const record={nickname,timeMs:Math.round(run.elapsed*1000),falls:run.falls,deaths:run.deaths,coins:run.coins,stage,completed,checkpoints:run.visited.size,courseVersion:ParkourCore.COURSE_VERSION};
  pendingResult={id:Date.now()+'-'+(++recordSequence),owner:session.key,record,queued:true};writeLocal(PENDING_KEY,pendingResult);submitPending();
 }

@@ -39,6 +39,7 @@
 body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{pointer-events:auto}.practice-tabs{display:flex;gap:10px;margin:18px 0}.practice-tabs button{flex:1}.practice-tabs button[aria-selected="true"]{background:#238c83;color:white}.zone-item:disabled{opacity:.4;cursor:default}.mechanic-description{line-height:1.9!important;text-align:left;padding:18px;border-radius:16px;background:#e6f2ec}.checkpoint-celebration{position:absolute;top:27%;left:50%;z-index:4;pointer-events:none;transform:translateX(-50%);color:#fffaf0;text-shadow:0 2px 14px #166963;font-weight:800;font-size:clamp(22px,4vw,36px);letter-spacing:3px;white-space:nowrap;opacity:0}.checkpoint-celebration.show{animation:checkpoint-bloom 2s ease both}.checkpoint-celebration:before,.checkpoint-celebration:after{content:'✦';color:#ffe094;font-size:.7em;margin:0 16px}@keyframes checkpoint-bloom{0%{opacity:0;transform:translate(-50%,14px) scale(.85)}18%,70%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-14px) scale(1.03)}}
 .welcome-panel{background:#f7faf0e8;padding:44px 38px}.welcome-panel h1{font-size:clamp(56px,14vw,88px);margin:18px 0 35px}.welcome-panel h1 span{display:block;color:var(--orange)}@media(max-height:500px){.welcome-panel{padding:20px 32px}.welcome-panel h1{font-size:54px;margin:10px 0 20px}}
 .login-choice{display:grid;gap:12px}.provider-button{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d5e1d9;color:var(--ink);box-shadow:0 5px 14px #24464b0b}.provider-button:hover{background:#fbfdf9}.provider-icon{width:20px;height:20px;flex:none}.login-divider{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:#8aa199;font-size:9px;letter-spacing:1px}.login-divider:before,.login-divider:after{content:"";height:1px;flex:1;background:var(--line)}
+#welcomeScreen{backdrop-filter:none;background:#cde3e722}
 </style>
 </head>
 <body>
@@ -742,7 +743,7 @@ class SkyRanking{
   _requireConfig(){if(!this.configured)throw codedError('CONFIG_MISSING','Firebase rankings are not configured.');}
   async _services(){
     this._requireConfig();
-    if(!this._servicesPromise)this._servicesPromise=this._loadSdk().then(sdk=>{
+     if(!this._servicesPromise)this._servicesPromise=this._loadSdk().then(async sdk=>{
        const app=sdk.getApps().find(candidate=>candidate.name===APP_NAME)||sdk.initializeApp(this.config,APP_NAME),auth=sdk.getAuth(app);
        await sdk.setPersistence(auth,sdk.browserLocalPersistence);
        return {sdk,auth,db:sdk.getFirestore(app)};
@@ -1073,8 +1074,8 @@ $('nicknameForm').addEventListener('submit',async e=>{
   try{nickname=await rankings.setNickname(name);writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · 로그아웃';setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
 });
  async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('welcome');}catch(error){toast(authError(error));}finally{authBusy=false;}}
- async function restoreLogin(){try{const user=await rankings.restoreSession();if(user&&!session)await selectAccount(user.uid,false,user.displayName||'');}catch(error){console.warn('Session restore unavailable',error);}}
-$('enterGameBtn').addEventListener('click',()=>setMode('login'));
+ async function restoreLogin(){try{const user=await rankings.restoreSession();if(user&&!session){await selectAccount(user.uid,false,user.displayName||'');setMode('welcome');}}catch(error){console.warn('Session restore unavailable',error);}}
+ $('enterGameBtn').addEventListener('click',()=>{if(session){if(nickname)setMode('lobby');else setMode('nickname');}else setMode('login');});
 $('nicknameBack').addEventListener('click',exitAccount);$('accountBtn').addEventListener('click',exitAccount);
 function openCourse(){
  courseReturn=mode==='paused'?'paused':mode==='playing'?'paused':'lobby';if(mode==='playing'){run.pause();saveRun();}

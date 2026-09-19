@@ -19,7 +19,7 @@
 @media(max-height:730px) and (max-width:760px){.hero{min-height:480px}.start-block{padding-top:45px}}
 @media(max-height:500px) and (min-width:650px){.hero{min-height:0}.start-block{padding-top:0}.save-summary{font-size:9px;padding:5px 10px;margin-bottom:6px}.start-block>.text-button{padding-top:6px}.start-block .primary{height:39px}.start-block .secondary{height:32px}}
 
-.auth-form{display:grid;gap:12px;text-align:left}.auth-form label{font-size:11px;color:var(--muted)}.auth-form input{width:100%;font:inherit;padding:13px;border:1px solid #bfd3c8;border-radius:10px;background:#fff;color:var(--ink)}.auth-form input:focus{outline:2px solid var(--teal)}.auth-form .primary{margin-top:8px}#accountBtn{display:block;margin:auto}#resultPlayer{font-weight:700;color:var(--teal)}.toast{position:absolute;z-index:40;top:11%;left:50%;max-width:min(420px,calc(100% - 32px));padding:12px 16px;border-radius:12px;background:#183c42e8;color:#fff;text-align:center;font-size:12px;line-height:1.5;pointer-events:none;opacity:0;transform:translate(-50%,-10px);transition:opacity .2s,transform .2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.auth-form{display:grid;gap:12px;text-align:left}.auth-form label{font-size:11px;color:var(--muted)}.auth-form input{width:100%;font:inherit;padding:13px;border:1px solid #bfd3c8;border-radius:10px;background:#fff;color:var(--ink)}.auth-form input:focus{outline:2px solid var(--teal)}.auth-form .primary{margin-top:8px}#accountBtn{display:block;margin:auto}#resultPlayer{font-weight:700;color:var(--teal)}
 .zone-item{text-align:left;cursor:pointer}.zone-item:hover{border-color:var(--teal);background:#e3f0e6}.my-table-wrap{overflow:auto}.my-table{width:100%;border-collapse:collapse;font-size:11px}.my-table th,.my-table td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.my-table th:first-child,.my-table td:first-child{text-align:left}.my-table th{color:var(--muted);font-weight:500}
 
 .is-phone #cameraBtn{display:none!important}
@@ -37,6 +37,7 @@
  .is-phone .overlay{padding:12px}.is-phone .panel{padding:22px}.is-phone .zone-list{grid-template-columns:1fr 1fr}.is-phone .zone-item{padding:11px}.is-phone .toast{top:20%;font-size:10px}
 }
 body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{pointer-events:auto}.practice-tabs{display:flex;gap:10px;margin:18px 0}.practice-tabs button{flex:1}.practice-tabs button[aria-selected="true"]{background:#238c83;color:white}.zone-item:disabled{opacity:.4;cursor:default}.mechanic-description{line-height:1.9!important;text-align:left;padding:18px;border-radius:16px;background:#e6f2ec}.checkpoint-celebration{position:absolute;top:27%;left:50%;z-index:4;pointer-events:none;transform:translateX(-50%);color:#fffaf0;text-shadow:0 2px 14px #166963;font-weight:800;font-size:clamp(22px,4vw,36px);letter-spacing:3px;white-space:nowrap;opacity:0}.checkpoint-celebration.show{animation:checkpoint-bloom 2s ease both}.checkpoint-celebration:before,.checkpoint-celebration:after{content:'✦';color:#ffe094;font-size:.7em;margin:0 16px}@keyframes checkpoint-bloom{0%{opacity:0;transform:translate(-50%,14px) scale(.85)}18%,70%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-14px) scale(1.03)}}
+.welcome-panel{background:#f7faf0e8;padding:44px 38px}.welcome-panel h1{font-size:clamp(56px,14vw,88px);margin:18px 0 35px}.welcome-panel h1 span{display:block;color:var(--orange)}@media(max-height:500px){.welcome-panel{padding:20px 32px}.welcome-panel h1{font-size:54px;margin:10px 0 20px}}
 </style>
 </head>
 <body>
@@ -46,7 +47,7 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 <main id="app">
 <canvas id="world" aria-label="3D 파쿠르 코스" tabindex="0"></canvas>
 <section id="lobby" class="screen lobby"><div class="lobby-wrap">
- <header class="topbar"><div class="logo"><span class="logo-mark">S.</span>SKYBOUND</div><div class="top-tools"><div class="best-caption">PERSONAL BEST<strong id="bestTime">— — : — —</strong></div><button id="rankBtn" class="icon-button" aria-label="랭킹"><svg><use href="#trophy"/></svg></button><button id="soundBtn" class="icon-button" aria-label="소리 켜기"><svg><use href="#mute"/></svg></button></div></header>
+ <header class="topbar"><div class="logo"><span class="logo-mark">S.</span>SKYBOUND</div><div class="top-tools"><div class="best-caption">PERSONAL BEST<strong id="bestTime">— — : — —</strong></div><button id="rankBtn" class="icon-button" aria-label="기록"><svg><use href="#trophy"/></svg></button><button id="soundBtn" class="icon-button" aria-label="소리 켜기"><svg><use href="#mute"/></svg></button></div></header>
  <div class="hero"><div class="eyebrow"><i></i>THE ASCENT / 15 CHAPTERS</div><h1>SKY<br class="break"><span>BOUND</span></h1><h2>하늘의 끝까지, 한 번 더.</h2><p>1단 점프부터 시작해 2단 점프를 해금하세요.<br>점점 더 어려워지는 15구역, 두 번의 갈림길과 숨은 보석 도전.</p><div class="intro-tags"><span>15개 구역</span><span>16가지 기믹</span><span>자동 저장</span></div><div class="start-block"><div id="saveSummary" class="save-summary" hidden></div><button id="continueBtn" class="primary" hidden>이어하기<svg><use href="#play"/></svg></button><button id="startBtn" class="primary">모험 시작<svg><use href="#arrow"/></svg></button><button id="practiceMenuBtn" class="secondary">연습</button><button id="lobbySettingsBtn" class="text-button">설정</button><button id="accountBtn" class="text-button" hidden>계정 나가기</button><button id="courseBtn" class="text-button" hidden>15개 구역 살펴보기 <span aria-hidden="true">↗</span></button></div></div>
  <div class="course-card"><small>YOUR NEXT CHALLENGE</small><strong>15<span>CHAPTERS</span></strong><p>11·13구역에서 길을 선택하세요</p><div class="course-minis"><span>01 구름 산책</span><span>05 낮은 하늘</span><span>07 회오리 계곡</span><span>15 질풍의 피날레</span></div></div>
  <footer class="footer"><div class="control-line desktop-only"><span><b class="key">W A S D</b> 이동</span><span><b class="key">SPACE</b> 점프 · 3구역부터 2단</span><span>마우스 드래그 &nbsp; 시점 회전</span></div><div class="control-line touch-only">왼쪽 드래그로 이동 &nbsp; · &nbsp; 오른쪽 드래그로 시점 회전</div><span class="small-brand">A LITTLE HIGHER. &nbsp; A LITTLE FURTHER.</span></footer>
@@ -61,17 +62,20 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 <section id="settingsScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">SETTINGS</div><h2>설정</h2><button id="myBtn" class="secondary">My · 내 기록</button><button id="helpBtn" class="secondary">조작 방법</button><button id="pauseSound" class="secondary">소리 켜기</button><button id="closeSettingsBtn" class="primary">돌아가기</button></div></section>
 <section id="mechanicScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">MECHANIC LAB</div><h2 id="mechanicTitle"></h2><p id="mechanicDescription" class="mechanic-description"></p><p class="tiny">전용 연습장에서 반복해서 익혀보세요.<br>모험 진행과 보석은 바뀌지 않습니다.</p><button id="mechanicStartBtn" class="primary">연습장 입장</button><button id="mechanicBackBtn" class="secondary">연습 목록으로</button></div></section>
 <section id="helpScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#help"/></svg></div><div class="eyebrow">HOW TO PLAY</div><h2>가볍게, 한 번 더.</h2><ul class="help-list"><li><svg><use href="#move"/></svg><span class="desktop-only">WASD 또는 방향키로 이동합니다.<br>마우스를 드래그하면 시점이 회전합니다.</span><span class="touch-only">화면 왼쪽을 드래그해 이동합니다.<br>오른쪽을 드래그하면 시점이 회전합니다.</span></li><li><svg><use href="#jump"/></svg><span>점프 버튼 또는 Space로 점프합니다.<br>3구역부터 공중에서 한 번 더 눌러 2단 점프하세요.<br>천장 아래에서는 1단 점프만 가능합니다.</span></li><li><svg><use href="#flag"/></svg><span>깃발이 있는 체크포인트 14곳을 통과한 뒤<br>마지막 게이트에 도착하면 완료입니다.</span></li><li><svg><use href="#return"/></svg><span>떨어지면 체크포인트에서 다시 시작합니다.<br>금이 간 발판에서는 오래 머물 수 없습니다.</span></li><li><svg><use href="#arrow"/></svg><span>정면이 막히면 화살표 쪽으로 옆 점프하세요.<br>옆 발판이 없는 곳은 2단 점프하며 화면을 돌려<br>벽 뒤 발판에 착지하세요.</span></li><li><svg><use href="#gem"/></svg><span>11·13구역에서 길을 고릅니다.<br>타원형 A/B 코스는 난이도와 보상이 같습니다.<br>각 코스 보석 5개 · 중복 획득은 불가합니다.<br>10구역 오른쪽에는 모든 기믹을 활용하는<br>31단계 보석 10개 도전이 있습니다.<br>이번 구간 보석은 죽으면 취소되고,<br>다음 체크포인트에 도착하면 확정됩니다.<br>특별 코스의 보석 10개는 획득 즉시 확정됩니다.</span></li></ul><button id="closeHelpBtn" class="primary">알겠습니다<svg><use href="#check"/></svg></button></div></section>
-<section id="resultScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#flag"/></svg></div><div class="eyebrow">COURSE COMPLETE</div><h2>하늘 끝에 도착!</h2><p>모든 체크포인트를 지나 코스를 완주했습니다.</p><div class="result-time" id="resultTime">00:00.0</div><div class="result-label">플레이 시간</div><div class="score-caption">랭킹 기록 <strong id="resultScore"></strong><small>재도전 1회당 +3초</small></div><span id="newRecord" hidden>NEW PERSONAL BEST</span><div class="result-stats"><div><span>황금 조각</span><strong id="resultCoins">0 / 60</strong></div><div><span>다시 도전</span><strong id="resultFalls">0</strong></div><div><span>체크포인트</span><strong>14 / 14</strong></div></div><p id="resultPlayer"></p><p id="submitStatus" class="rank-status" role="status"></p><button id="resultRankBtn" class="secondary">랭킹 보기</button><button id="retryBtn" class="primary result-retry">기록에 다시 도전<svg><use href="#arrow"/></svg></button><button id="resultHomeBtn" class="secondary">로비로 돌아가기</button></div></section>
+<section id="resultScreen" class="screen overlay" hidden><div class="panel"><div class="panel-icon"><svg><use href="#flag"/></svg></div><div class="eyebrow">COURSE COMPLETE</div><h2>하늘 끝에 도착!</h2><p>모든 체크포인트를 지나 코스를 완주했습니다.</p><div class="result-time" id="resultTime">00:00.0</div><div class="result-label">플레이 시간</div><div class="score-caption" hidden>개인 시간 기록 <strong id="resultScore"></strong><small>재도전 1회당 +3초</small></div><span id="newRecord" hidden>NEW PERSONAL BEST</span><div class="result-stats"><div><span>황금 조각</span><strong id="resultCoins">0 / 60</strong></div><div><span>죽은 횟수</span><strong id="resultFalls">0</strong></div><div><span>체크포인트</span><strong>14 / 14</strong></div></div><p id="resultPlayer"></p><p id="submitStatus" class="rank-status" role="status"></p><button id="resultRankBtn" class="secondary">기록 보기</button><button id="retryBtn" class="primary result-retry">기록에 다시 도전<svg><use href="#arrow"/></svg></button><button id="resultHomeBtn" class="secondary">로비로 돌아가기</button></div></section>
 
 <section id="newScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">A FRESH START</div><h2>처음부터 도전할까요?</h2><p>지금 이어갈 수 있는 진행 상황을 지우고<br>첫 번째 구역부터 시작합니다.</p><button id="confirmNewBtn" class="primary">새로 시작하기<svg><use href="#arrow"/></svg></button><button id="cancelNewBtn" class="secondary">돌아가기</button></div></section>
 <section id="courseScreen" class="screen overlay" hidden><div class="panel wide-panel"><div class="panel-head"><div><div class="eyebrow">THE ASCENT</div><h2>연습</h2></div><button id="closeCourseBtn" class="icon-button" aria-label="코스 안내 닫기"><svg><use href="#close"/></svg></button></div><p>클리어했거나 도전 중인 구역을 연습할 수 있습니다. 기믹 연습장에서는 각각의 움직임을 따로 익혀보세요.</p><div class="practice-tabs"><button id="zoneTab" class="secondary">구역 연습</button><button id="mechanicTab" class="secondary">기믹 연습</button></div><div id="zoneList" class="zone-list"></div><div id="mechanicList" class="zone-list" hidden></div></div></section>
-<section id="rankingScreen" class="screen overlay" hidden><div class="panel wide-panel ranking-panel"><div class="panel-head"><div><div class="eyebrow"><span id="rankingScope">SKYBOUND / RANKING</span></div><h2>가장 빠른 도약</h2></div><button id="closeRankBtn" class="icon-button" aria-label="랭킹 닫기"><svg><use href="#close"/></svg></button></div><div class="rank-meta"><span>완주 기록 · TOP 50</span><button id="refreshRankBtn" class="icon-button" aria-label="랭킹 새로고침"><svg><use href="#refresh"/></svg></button></div><p class="rank-explain">플레이 시간 + 재도전 1회당 3초<br>기록이 짧을수록 높은 순위입니다.</p><div id="rankingStatus" class="rank-status" role="status"></div><ol id="rankingList" class="ranking-list"></ol><div id="pendingBox" class="pending-box" hidden><span>완주 기록을 자동 등록하고 있습니다. 연결이 돌아오면 재시도합니다.</span><div id="pendingStatus" class="rank-status" role="status"></div></div></div></section>
+<section id="rankingScreen" class="screen overlay" hidden><div class="panel wide-panel ranking-panel"><div class="panel-head"><div><div class="eyebrow"><span id="rankingScope">SKYBOUND / RANKING</span></div><h2>기록</h2></div><button id="closeRankBtn" class="icon-button" aria-label="기록 닫기"><svg><use href="#close"/></svg></button></div><div class="rank-meta"><span>플레이 중 실시간 반영</span><button id="refreshRankBtn" class="icon-button" aria-label="랭킹 새로고침"><svg><use href="#refresh"/></svg></button></div><p class="rank-explain">조각이 많은 순서로 표시됩니다.<br>동점이면 최고 단계가 높고, 죽은 횟수가 적은 순서입니다.</p><div id="rankingStatus" class="rank-status" role="status"></div><ol id="rankingList" class="ranking-list"></ol><div id="pendingBox" class="pending-box" hidden><span>기록을 자동 갱신하고 있습니다. 연결이 돌아오면 재시도합니다.</span><div id="pendingStatus" class="rank-status" role="status"></div></div></div></section>
+<section id="welcomeScreen" class="screen overlay" hidden><div class="panel welcome-panel"><div class="eyebrow">A LITTLE HIGHER</div><h1>SKY<span>BOUND</span></h1><button id="enterGameBtn" class="primary">게임 시작하기<svg><use href="#play"/></svg></button></div></section>
 <section id="loginScreen" class="screen overlay" hidden><div class="panel">
-<div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 기록은 자동으로 등록됩니다.</p>
-<button id="googleBtn" class="primary">Google로 계속하기</button><button id="guestBtn" class="secondary">게스트로 계속하기</button><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
-<p class="tiny">Google과 게스트 모두 닉네임으로 온라인 랭킹에 참여합니다.</p>
+<div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 전에도 조각·죽은 횟수·최고 단계가 자동 반영됩니다.</p>
+<form id="loginForm" class="auth-form"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="254" placeholder="you@example.com">
+<label for="loginPassword">비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="비밀번호">
+<button id="loginSubmit" class="primary" type="submit">로그인</button></form><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
+<button id="createAccountBtn" class="text-button">처음이신가요? 계정 만들기</button><button id="guestBtn" class="secondary">이 기기에서 게스트로 플레이</button><p class="tiny">게스트 기록은 이 브라우저에만 저장됩니다.</p>
 </div></section>
-<section id="nicknameScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">YOUR ADVENTURE</div><h2>닉네임을 정해주세요</h2><p>완주 기록에 이 이름이 표시됩니다.</p><form id="nicknameForm" class="auth-form"><label for="nicknameInput">닉네임 · 1~20자</label><input id="nicknameInput" autocomplete="nickname" maxlength="20" required placeholder="하늘을 달리는 이름"><button id="nicknameSubmit" class="primary" type="submit">이 이름으로 시작</button></form><p id="nicknameStatus" class="rank-status" role="status"></p><button id="nicknameBack" class="text-button">로그인으로 돌아가기</button></div></section>
+<section id="nicknameScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">YOUR ADVENTURE</div><h2>닉네임을 정해주세요</h2><p>한 번 정한 닉네임은 변경할 수 없습니다.</p><form id="nicknameForm" class="auth-form"><label for="nicknameInput">닉네임 · 1~20자</label><input id="nicknameInput" autocomplete="nickname" maxlength="20" required placeholder="하늘을 달리는 이름"><button id="nicknameSubmit" class="primary" type="submit">이 이름으로 시작</button></form><p id="nicknameStatus" class="rank-status" role="status"></p><button id="nicknameBack" class="text-button">로그인으로 돌아가기</button></div></section>
 <section id="practiceScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">PRACTICE COMPLETE</div><h2 id="practiceTitle">구역 연습 완료</h2><p id="practiceStats"></p><button id="practiceRetryBtn" class="primary">같은 구역 다시 연습</button><button id="practiceChooseBtn" class="secondary">다른 구역 선택</button><button id="practiceReturnBtn" class="secondary" hidden>원래 게임으로 돌아가기</button><button id="practiceHomeBtn" class="text-button">로비로 돌아가기</button></div></section>
 <section id="myScreen" class="screen overlay" hidden><div class="panel wide-panel"><div class="panel-head"><div><div class="eyebrow">MY · 이 기기 기록</div><h2 id="myNickname"></h2></div><button id="closeMyBtn" class="icon-button" aria-label="내 기록 닫기"><svg><use href="#close"/></svg></button></div><div class="result-stats"><div><span>전체 데스</span><strong id="myDeaths">0</strong></div><div><span>모험 완주</span><strong id="myClears">0</strong></div><div><span>최고 기록</span><strong id="myBest">—</strong></div></div><p class="tiny">일반 플레이와 연습의 실제 데스를 합산합니다. 수동 재시작은 제외합니다.</p><div class="my-table-wrap"><table class="my-table"><thead><tr><th>구역</th><th>일반 데스</th><th>연습 데스</th><th>연습 최고</th></tr></thead><tbody id="myStageRows"></tbody></table></div><p id="myBonusStats" class="tiny"></p></div></section>
 <section id="errorScreen" class="screen overlay error-screen" hidden><div class="panel"><div class="panel-icon"><svg><use href="#help"/></svg></div><h2>3D 화면을 열 수 없어요</h2><p id="errorMessage">이 파일을 Chrome 또는 Safari 브라우저에서 열어주세요. 브라우저의 3D 그래픽 기능이 필요합니다.</p><button id="reloadBtn" class="primary">다시 열기</button></div></section>
@@ -234,6 +238,11 @@ const SkyCourse=(()=>{
    if(q.type==='move'&&q.stage>=2){q.axis=q.courseRight?'z':'x';q.amplitude=2.3;q.speed=2.2;}
    if(q.courseRight){q.beltX=-4.7;q.beltZ=0;}if(q.tailwind){q.windDirection=-1;q.windStrength=15.0;}if(q.finaleLift)q.phase=-.35;
   });
+  // One uninterrupted high-altitude wind lane through the whole finale.
+  const windLane=ordered.filter(q=>q.tailwind),windFinish=ordered.find(q=>q.finaleGoal);
+  if(windLane.length){const first=windLane[0],last=windFinish||windLane.at(-1),field={minX:Math.min(...windLane.map(q=>q.x-q.w/2),last.x-last.w/2)-6,maxX:Math.max(...windLane.map(q=>q.x+q.w/2),last.x+last.w/2)+6,minZ:last.z-last.d/2-30,maxZ:first.z+first.d/2+2,bottom:Math.min(...windLane.map(q=>q.y))-.5,top:Math.max(...windLane.map(q=>q.y),last.y)+40};
+   for(const q of windLane){const next=ordered[q.nextIds[0]]||q;q.windField=field;q.windVisual={maxZ:q.z+q.d*.65,minZ:next===last?field.minZ:next.z-next.d*.35};}
+  }
   // Consecutive phase platforms share a clock, offset by half a cycle.
   for(let stage=0;stage<ZONES.length;stage++)for(const route of [undefined,'left','right','bonus']){
    const chain=ordered.filter(q=>q.stage===stage&&q.route===route);let pairIndex=0;
@@ -372,7 +381,10 @@ const ParkourCore=(()=>{
    if(speed>.2){const targetYaw=Math.atan2(p.vx,-p.vz);p.yaw+=Math.atan2(Math.sin(targetYaw-p.yaw),Math.cos(targetYaw-p.yaw))*(1-Math.exp(-dt*18));p.yaw=Math.atan2(Math.sin(p.yaw),Math.cos(p.yaw));if(p.grounded)this.walk+=speed*dt;}
    const ox=p.x,oy=p.y,oz=p.z;p.x+=(p.vx+p.carryX)*dt;p.z+=(p.vz+p.carryZ)*dt;
    let tailwindForce=0;
-   for(const q of this.platforms)if(q.type==='wind'&&Math.abs(p.x-q.x)<q.w*.75&&Math.abs(p.z-q.z)<q.d*.85&&p.y>q.y-.5&&p.y<q.y+(q.tailwind?8:6)){if(q.tailwind)tailwindForce=Math.min(tailwindForce,q.windPush);else if(q.courseRight)p.z+=q.windPush*dt;else p.x+=q.windPush*dt;}
+   for(const q of this.platforms)if(q.type==='wind'){
+    const f=q.windField,inside=q.tailwind&&f?p.x>f.minX&&p.x<f.maxX&&p.z>f.minZ&&p.z<f.maxZ&&p.y>f.bottom&&p.y<f.top:Math.abs(p.x-q.x)<q.w*.75&&Math.abs(p.z-q.z)<q.d*.85&&p.y>q.y-.5&&p.y<q.y+6;
+    if(inside){if(q.tailwind)tailwindForce=Math.min(tailwindForce,q.windPush);else if(q.courseRight)p.z+=q.windPush*dt;else p.x+=q.windPush*dt;}
+   }
    if(tailwindForce){p.tailwindSpeed=approach(p.tailwindSpeed||0,-tailwindForce,30*dt);}else p.tailwindSpeed=(p.tailwindSpeed||0)*Math.exp(-1.4*dt);p.z-=p.tailwindSpeed*dt;
    if(p.grounded&&ground.type==='conveyor'){p.x+=ground.beltX*dt;p.z+=ground.beltZ*dt;}
    p.vy-=GRAVITY*dt;this.inTornado=false;
@@ -614,7 +626,8 @@ class SkyRenderer{
   if(q.type==='elevator')this.draw('ring',[q.x,y+.03,q.z],[2,.3,2],[.3,.75,1],0,0,0,1);
   if(q.tailwind){
    this.arrow(q.x,y+.08,q.z,0,-1,1.3,[.4,1,.84],false);
-   for(let i=0;i<16;i++)this.draw('box',[q.x+(i%4-1.5)*1.6,y+.5+(i%3)*.55,q.z+q.d*.75-((t*24+i*1.7)%(q.d*1.5))],[.045,.045,1.8],[.6,1,.88,.7],0,0,0,1);
+   const f=q.windVisual||q.windField,length=f.maxZ-f.minZ;
+   for(let i=0;i<48;i++)this.draw('box',[q.x+(i%4-1.5)*2.2,y+.6+((i*7)%40),f.maxZ-((t*24+i*2.3)%length)],[.035,.035,2.5],[.6,1,.88,.32],0,0,0,1);
   }else if(q.type==='wind'){
    this.arrow(q.x,y+.08,q.z,q.courseRight?0:q.windDirection,q.courseRight?q.windDirection:0,1,[.2,.9,.8],false);
    for(let i=0;i<9;i++)this.draw('box',[q.x+(q.courseRight?(i%3-1)*q.w*.28:q.windDirection*((t*(2+q.windGust*7)+i*.7)%(q.w*1.4)-q.w*.7)),y+.4+(i%4)*.65,q.z+(q.courseRight?q.windDirection*((t*(2+q.windGust*7)+i*.7)%(q.d*1.4)-q.d*.7):(i%3-1)*q.d*.28)],q.courseRight?[.07,.07,.7+q.windGust]:[.7+q.windGust,.07,.07],[.2,.9,.8,.4+q.windGust*.5]);
@@ -673,9 +686,12 @@ class SkyRenderer{
 }
 if(typeof module!=='undefined')module.exports={SkyMath,SkyRenderer};
 
-// Firebase web-app config is public. Never put a service-account credential or private key here.
-// Enable Google and Anonymous providers in Firebase Authentication before deployment.
-var SKYBOUND_FIREBASE_CONFIG={apiKey:'AIzaSyCFq6XX0P9qGZu5h5Z_OohQUHCkoi22iMA',authDomain:'project-81f0c41a-f274-4ccd-8d8.firebaseapp.com',projectId:'project-81f0c41a-f274-4ccd-8d8',storageBucket:'project-81f0c41a-f274-4ccd-8d8.firebasestorage.app',messagingSenderId:'532390439209',appId:'1:532390439209:web:463f51e6df4caf07ef2f38'};
+// Replace null with the public web-app config copied from your own Firebase project.
+// This file must never contain a service-account credential or private key.
+// To enable online accounts: provide your Firebase web app config, enable Email/Password
+// in Firebase Authentication, and deploy owner-scoped Firestore rules for rankings/{course}/scores/{uid}.
+// No project credentials are bundled; guest mode stores records on this device only.
+var SKYBOUND_FIREBASE_CONFIG=globalThis.SKYBOUND_FIREBASE_CONFIG||null;
 
 (function(root){
 'use strict';
@@ -695,17 +711,19 @@ function validateRecord(input){
   if(!input||typeof input!=='object')throw codedError('INVALID_RECORD','Run result is required.');
   const record={
     nickname:normalizeNickname(input.nickname),
-    timeMs:integer(input.timeMs,1,86400000,'timeMs'),
+    timeMs:integer(input.timeMs,0,86400000,'timeMs'),
     falls:integer(input.falls,0,10000,'falls'),
     coins:integer(input.coins,0,10000,'coins'),
-    checkpoints:integer(input.checkpoints,CHECKPOINTS,CHECKPOINTS,'checkpoints'),
+    checkpoints:integer(input.checkpoints,0,CHECKPOINTS,'checkpoints'),
+    deaths:integer(input.deaths,0,100000,'deaths'),stage:integer(input.stage,1,SkyCourse.ZONES.length,'stage'),completed:input.completed===true,
     courseVersion:input.courseVersion
   };
   if(record.courseVersion!==COURSE_VERSION)throw codedError('INVALID_RECORD','Course version is invalid.');
   record.scoreMs=scoreFor(record.timeMs,record.falls);
   return record;
 }
-function publicRecord(value){return {uid:value.uid,nickname:value.nickname,timeMs:value.timeMs,falls:value.falls,coins:value.coins,scoreMs:value.scoreMs};}
+function publicRecord(value){return {uid:value.uid,nickname:value.nickname,timeMs:value.timeMs,falls:value.falls,coins:value.coins,deaths:value.deaths,stage:value.stage,completed:value.completed,scoreMs:value.scoreMs};}
+function compareRecords(a,b){return b.coins-a.coins||b.stage-a.stage||a.deaths-b.deaths||String(a.uid).localeCompare(String(b.uid));}
 function hasConfig(config){return !!config&&typeof config==='object'&&['apiKey','authDomain','projectId','appId'].every(key=>typeof config[key]==='string'&&config[key].trim());}
 async function loadFirebaseSdk(){
   const [app,auth,firestore]=await Promise.all([
@@ -733,77 +751,68 @@ class SkyRanking{
     }).catch(error=>{this._servicesPromise=null;throw serviceError(error);});
     return this._servicesPromise;
   }
-  async loginWithGoogle(){
-    const {sdk,auth}=await this._services(),provider=new sdk.GoogleAuthProvider();
-    provider.setCustomParameters({prompt:'select_account'});
-    const result=await sdk.signInWithPopup(auth,provider);
-    this.localMode=false;this._uid=result.user.uid;return result.user;
-  }
-  async loginAsGuest(){
-    if(!this.configured){let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}this.useGuest(uid);return {uid,displayName:''};}
-    const {sdk,auth}=await this._services(),result=await sdk.signInAnonymously(auth);
+  async login(email,password,create=false){
+    const {sdk,auth}=await this._services();
+    const result=await (create?sdk.createUserWithEmailAndPassword:sdk.signInWithEmailAndPassword)(auth,email,password);
     this.localMode=false;this._uid=result.user.uid;return result.user;
   }
   useGuest(uid){this.localMode=true;this._uid=uid;}
-  async setNickname(name){
-    name=normalizeNickname(name);if(this.localMode)return;
-    const {sdk,auth}=await this._services();if(!auth.currentUser||auth.currentUser.uid!==this._uid)throw codedError('AUTH_REQUIRED','Login required');
-    await sdk.updateProfile(auth.currentUser,{displayName:name});
+  async getNickname(fallback=''){
+    if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
+    if(this.localMode){const old=localStorage.getItem('skybound-locked-name:'+this._uid);if(old)return old;if(fallback)return this.setNickname(fallback);return '';}
+    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+    const doc=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(doc.exists()&&doc.data().nickname)return doc.data().nickname;
+    return user.displayName?this.setNickname(user.displayName):'';
   }
+  async setNickname(name){
+    name=normalizeNickname(name);if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
+    if(this.localMode){const key='skybound-locked-name:'+this._uid,old=localStorage.getItem(key);if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');localStorage.setItem(key,old||name);return old||name;}
+    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+    const ref=sdk.doc(db,'players',user.uid);
+     return sdk.runTransaction(db,async tx=>{const doc=await tx.get(ref),old=doc.exists()?doc.data().nickname:user.displayName;if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');if(!doc.exists())tx.set(ref,{nickname:old||name,createdAt:sdk.serverTimestamp()});return old||name;});
+   }
   async loadProgress(){
     if(this.localMode||!this._uid)return null;
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    try{
-      const ref=sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION),snapshot=await sdk.getDoc(ref);
-      return snapshot.exists()?snapshot.data():null;
-    }catch(error){throw serviceError(error);}
+    try{const snapshot=await sdk.getDoc(sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION));return snapshot.exists()?snapshot.data():null;}
+    catch(error){throw serviceError(error);}
   }
   async saveProgress(progress){
     if(this.localMode||!this._uid)return false;
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    try{
-      const ref=sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION);
-      await sdk.setDoc(ref,{...progress,uid:user.uid,courseVersion:COURSE_VERSION,updatedAt:sdk.serverTimestamp()},{merge:true});
-      return true;
-    }catch(error){throw serviceError(error);}
+    try{await sdk.setDoc(sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION),{...progress,uid:user.uid,courseVersion:COURSE_VERSION,updatedAt:sdk.serverTimestamp()},{merge:true});return true;}
+    catch(error){throw serviceError(error);}
   }
   async logout(){if(!this.localMode){const {sdk,auth}=await this._services();await sdk.signOut(auth);}this._uid=null;}
-  localScores(){try{const rows=JSON.parse(localStorage.getItem('skybound-local-scores-'+COURSE_VERSION)||'[]');return Array.isArray(rows)?rows.filter(row=>row&&typeof row.uid==='string'&&Number.isFinite(row.scoreMs)):[];}catch{return [];}}
+  localScores(){try{const rows=JSON.parse(localStorage.getItem('skybound-live-records-'+COURSE_VERSION)||'[]');return Array.isArray(rows)?rows.filter(row=>row&&typeof row.uid==='string'&&Number.isInteger(row.coins)&&Number.isInteger(row.deaths)&&Number.isInteger(row.stage)):[];}catch{return [];}}
   async _authenticate(services){
     const user=services.auth.currentUser;
     if(!user||user.uid!==this._uid)throw codedError('AUTH_REQUIRED','Login required');return user;
   }
   async getTop(){
-    if(this.localMode)return this.localScores().sort((a,b)=>a.scoreMs-b.scoreMs).slice(0,50);
-    const {sdk,db}=await this._services();
-    try{
-      const ref=sdk.collection(db,'rankings',COURSE_VERSION,'scores');
-      const snapshot=await sdk.getDocs(sdk.query(ref,sdk.orderBy('scoreMs','asc'),sdk.limit(50)));
-      return snapshot.docs.map(doc=>publicRecord(doc.data()));
-    }catch(error){throw serviceError(error);}
+    if(this.localMode)return this.localScores().sort(compareRecords);
+    const {sdk,db}=await this._services();try{const snapshot=await sdk.getDocs(sdk.collection(db,'rankings',COURSE_VERSION,'records'));return snapshot.docs.map(doc=>publicRecord(doc.data())).sort(compareRecords);}catch(error){throw serviceError(error);}
   }
-  subscribeTop(onEntries,onError){
-    if(this.localMode){onEntries(this.localScores().sort((a,b)=>a.scoreMs-b.scoreMs).slice(0,50));return ()=>{};}
-    let stopped=false,unsubscribe=()=>{stopped=true;};
-    this._services().then(({sdk,db})=>{if(stopped)return;const ref=sdk.collection(db,'rankings',COURSE_VERSION,'scores');unsubscribe=sdk.onSnapshot(sdk.query(ref,sdk.orderBy('scoreMs','asc'),sdk.limit(50)),snapshot=>onEntries(snapshot.docs.map(doc=>publicRecord(doc.data()))),error=>onError(serviceError(error)));}).catch(error=>onError(error));
-    return ()=>{stopped=true;unsubscribe();};
+  async watch(onRows,onError){
+    if(this.localMode){const render=()=>onRows(this.localScores().sort(compareRecords));window.addEventListener('storage',render);window.addEventListener('skybound-records',render);render();return ()=>{window.removeEventListener('storage',render);window.removeEventListener('skybound-records',render);};}
+    const {sdk,db}=await this._services();return sdk.onSnapshot(sdk.collection(db,'rankings',COURSE_VERSION,'records'),snapshot=>onRows(snapshot.docs.map(doc=>publicRecord(doc.data())).sort(compareRecords)),error=>onError(serviceError(error)));
   }
   async submit(input){
     const candidate=validateRecord(input);
     if(this.localMode){
       if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
       const rows=this.localScores(),existing=rows.find(row=>row.uid===this._uid);
-      if(existing&&existing.scoreMs<=candidate.scoreMs)return {saved:false,best:existing,local:true};
+      const locked=await this.getNickname();if(!locked||locked!==candidate.nickname)throw codedError('NICKNAME_LOCKED','Nickname does not match');
       const stored={uid:this._uid,...candidate};const next=rows.filter(row=>row.uid!==this._uid);next.push(stored);
-      try{localStorage.setItem('skybound-local-scores-'+COURSE_VERSION,JSON.stringify(next));}catch{throw codedError('STORAGE_FULL','Unable to save on this device');}
-      return {saved:true,best:stored,local:true};
+      try{localStorage.setItem('skybound-live-records-'+COURSE_VERSION,JSON.stringify(next));}catch{throw codedError('STORAGE_FULL','Unable to save on this device');}
+      window.dispatchEvent(new Event('skybound-records'));return {saved:true,best:stored,local:true};
     }
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    const ref=sdk.doc(db,'rankings',COURSE_VERSION,'scores',user.uid);
+    const ref=sdk.doc(db,'rankings',COURSE_VERSION,'records',user.uid);
     try{
       return await sdk.runTransaction(db,async transaction=>{
         const snapshot=await transaction.get(ref),existing=snapshot.exists()?snapshot.data():null;
-        if(existing&&existing.scoreMs<=candidate.scoreMs)return {saved:false,best:publicRecord(existing)};
+        const profile=await transaction.get(sdk.doc(db,'players',user.uid));if(!profile.exists()||profile.data().nickname!==candidate.nickname)throw codedError('NICKNAME_LOCKED','Nickname does not match');
         const timestamp=sdk.serverTimestamp();
         const stored={uid:user.uid,...candidate,createdAt:existing?.createdAt||timestamp,updatedAt:timestamp};
         transaction.set(ref,stored);
@@ -837,8 +846,8 @@ const MECHANICS=[
 ];
 const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const canvas=$('world'),run=new ParkourCore.Run(),previewRun=new ParkourCore.Run(),keys=new Set();
-let SAVE_KEY='skybound-run-v9',BEST_KEY='skybound-best-v10',PENDING_KEY='skybound-pending-v9',NAME_KEY='skybound-name-v2';
-let renderer=null,mode='lobby',modeBeforeContextLoss='lobby',runOwnsSave=false,yaw=0,pitch=.58,camSnap=true,last=0,accumulator=0,visualTime=0,hudClock=0,saveClock=0,toastTimer=0,best=0,muted=true,audioContext=null,saveWorks=true,submitting=false,rankReturn='lobby',rankRequest=0;
+let SAVE_KEY='skybound-run-v9',BEST_KEY='skybound-best-v10',PENDING_KEY='skybound-live-pending-v1',NAME_KEY='skybound-name-v2';
+let renderer=null,mode='welcome',modeBeforeContextLoss='lobby',runOwnsSave=false,yaw=0,pitch=.58,camSnap=true,last=0,accumulator=0,visualTime=0,hudClock=0,saveClock=0,toastTimer=0,best=0,muted=true,audioContext=null,saveWorks=true,submitting=false,rankReturn='lobby',rankRequest=0;
 let movePointer=null,lookPointer=null,stickX=0,stickY=0,originX=0,originY=0,lookX=0,lookY=0;
 const touch=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0;
 document.body.classList.toggle('is-touch',touch);
@@ -846,22 +855,24 @@ let phone=touch&&Math.min(innerWidth,innerHeight)<600,lookYawTarget=0,lookPitchT
 function readLocal(key,fallback=null){try{const v=localStorage.getItem(key);return v===null?fallback:JSON.parse(v);}catch{return fallback;}}
 function writeLocal(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
 function removeLocal(key){try{localStorage.removeItem(key);}catch{}}
+let recordSignature='',recordSequence=0,stopRecords=null;
 let practiceReturn=null,settingsReturn='lobby',selectedMechanic=null;
 let MY_KEY='',myReturn='lobby',courseReturn='lobby',profile=null;
- let savedRun=null,pendingResult=null,nickname='',session=null,authBusy=false,retryTimer=null,retryDelay=2000,rankingUnsubscribe=null,cloudSaveBusy=false,cloudSaveSerial=0;
+ let savedRun=null,pendingResult=null,nickname='',session=null,accountCreating=false,authBusy=false,retryTimer=null,retryDelay=2000,cloudSaveJob=null,cloudSaveSerial=0;
 try{muted=localStorage.getItem('skybound-muted-v1')!=='false';}catch{}
 const rankings=new SkyRanking(globalThis.SKYBOUND_FIREBASE_CONFIG);
 function timeText(t){const n=Math.floor(Math.max(0,t)*10),m=Math.floor(n/600),sec=Math.floor(n/10)%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')+'.'+n%10;}
 function sound(kind){if(muted)return;try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();if(audioContext.state==='suspended')audioContext.resume();const configs={headBump:[150,55,.13,.11],jump:[250,430,.10,.055],doubleJump:[370,620,.13,.04],coin:[980,1320,.15,.03],checkpoint:[510,880,.33,.06],fall:[230,155,.17,.025],finish:[620,1240,.6,.05],click:[450,560,.075,.035]};if(!configs[kind])return;const [a,b,duration,volume]=configs[kind],now=audioContext.currentTime,o=audioContext.createOscillator(),gain=audioContext.createGain();o.type='sine';o.frequency.setValueAtTime(a,now);o.frequency.exponentialRampToValueAtTime(b,now+duration);gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.001,now+duration);o.connect(gain);gain.connect(audioContext.destination);o.start(now);o.stop(now+duration+.01);}catch{}}
 function syncSound(){for(const id of ['soundBtn','gameSound']){$(id).innerHTML='<svg><use href="#'+(muted?'mute':'sound')+'"/></svg>';$(id).setAttribute('aria-label',muted?'소리 켜기':'소리 끄기');}$('pauseSound').textContent=muted?'소리 켜기':'소리 끄기';}
 function toggleSound(){muted=!muted;try{localStorage.setItem('skybound-muted-v1',String(muted));}catch{}syncSound();sound('click');}
-function toast(message,duration=2800){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),duration);}
+function toast(){}
 function clearInput(){lookYawTarget=yaw;lookPitchTarget=pitch;keys.clear();movePointer=lookPointer=null;stickX=stickY=0;$('joystick').hidden=true;run.jumpBuffer=0;}
 
 function setMode(next){
+ if(next!=='ranking'){rankRequest++;if(stopRecords){stopRecords();stopRecords=null;}}
  mode=next;
  $('pausePracticeReturnBtn').hidden=$('practiceReturnBtn').hidden=!practiceReturn;
- for(const [id,value]of [['settingsScreen','settings'],['mechanicScreen','mechanic'],['myScreen','my'],['practiceScreen','practiceResult'],['loginScreen','login'],['nicknameScreen','nickname'],['lobby','lobby'],['pauseScreen','paused'],['helpScreen','help'],['resultScreen','finished'],['errorScreen','error'],['rankingScreen','ranking'],['courseScreen','course'],['newScreen','new']])$(id).hidden=next!==value;
+ for(const [id,value]of [['welcomeScreen','welcome'],['settingsScreen','settings'],['mechanicScreen','mechanic'],['myScreen','my'],['practiceScreen','practiceResult'],['loginScreen','login'],['nicknameScreen','nickname'],['lobby','lobby'],['pauseScreen','paused'],['helpScreen','help'],['resultScreen','finished'],['errorScreen','error'],['rankingScreen','ranking'],['courseScreen','course'],['newScreen','new']])$(id).hidden=next!==value;
  $('hud').hidden=!['playing','paused','help'].includes(next);if(next!=='playing')clearInput();$('pauseBtn').innerHTML='<svg><use href="#'+(next==='paused'?'play':'pause')+'"/></svg>';$('pauseBtn').setAttribute('aria-label',next==='paused'?'계속하기':'일시정지');document.body.dataset.mode=next;accumulator=0;
  if(next!=='playing')$('checkpointCelebration').classList.remove('show');if(next==='lobby')syncLobby();
 }
@@ -875,24 +886,21 @@ let saveJob=null;
 function scheduleSave(){if(saveJob!==null)return;const save=()=>{saveJob=null;if(mode==='playing'&&runOwnsSave&&run.status!=='finished')saveRun();};saveJob=window.requestIdleCallback?window.requestIdleCallback(save,{timeout:1200}):setTimeout(save,0);}
  function saveRun(){
   if(!runOwnsSave||run.practiceStage!==null||run.status==='finished')return;
-  unlockStage(run.stage);savedRun={run:run.snapshot(),camera:{yaw,pitch},savedAt:Date.now()};saveWorks=writeLocal(SAVE_KEY,savedRun);syncCloudProgress(savedRun);
+  unlockStage(run.stage);savedRun={run:run.snapshot(),camera:{yaw,pitch},savedAt:Date.now()};saveWorks=writeLocal(SAVE_KEY,savedRun);syncCloudProgress(savedRun);queueLiveRecord();
  }
- let cloudSaveJob=null;
  function syncCloudProgress(progress){
   if(!progress||rankings.localMode||!session)return;
-  const serial=++cloudSaveSerial;clearTimeout(cloudSaveJob);
-  cloudSaveJob=setTimeout(async()=>{
+  const serial=++cloudSaveSerial;clearTimeout(cloudSaveJob);cloudSaveJob=setTimeout(async()=>{
    if(serial!==cloudSaveSerial||!session)return;
-   cloudSaveBusy=true;const owner=session.key;
+   const owner=session.key;
    try{await rankings.saveProgress(progress);if(session?.key===owner)saveWorks=true;}
    catch(error){if(session?.key===owner)saveWorks=false;}
-   finally{cloudSaveBusy=false;}
   },250);
  }
 function start(){
  if(!session||!nickname){setMode('login');return;}
  if(!renderer){setMode('error');return;}
- practiceReturn=null;run.restart();runOwnsSave=true;renderer.particles=[];clearInput();yaw=0;pitch=.58;camSnap=true;setMode('playing');saveRun();
+ practiceReturn=null;recordSignature='';run.restart();runOwnsSave=true;renderer.particles=[];clearInput();yaw=0;pitch=.58;camSnap=true;setMode('playing');saveRun();
  $('moveHint').style.opacity='1';$('respawnVeil').style.opacity=0;canvas.focus({preventScroll:true});sound('click');clearTimeout(toastTimer);$('toast').classList.remove('show');syncHUD();
 }
 function continueRun(){
@@ -909,14 +917,20 @@ function goHome(){
  if(run.status!=='finished'){run.pause();saveRun();}clearInput();setMode('lobby');camSnap=true;clearTimeout(toastTimer);$('toast').classList.remove('show');$('respawnVeil').style.opacity=0;
  runOwnsSave=false;if(!saveWorks&&savedRun)toast('브라우저 저장 공간을 사용할 수 없어, 현재 창에서만 이어갈 수 있습니다.',4500);
 }
+function queueLiveRecord(){
+ if(!runOwnsSave||run.practiceStage!==null||!session||!nickname)return;
+ const stage=Math.min(ParkourCore.ZONES.length,Math.max(run.stage,run.zoneForPlatform(run.platforms[run.maxPlatform]),run.visited.size)+1),completed=run.status==='finished';
+ const signature=JSON.stringify([session.key,run.coins,run.deaths,stage,completed]);if(signature===recordSignature)return;recordSignature=signature;
+ const record={nickname,timeMs:Math.round(run.elapsed*1000),falls:run.falls,deaths:run.deaths,coins:run.coins,stage,completed,checkpoints:run.visited.size,courseVersion:ParkourCore.COURSE_VERSION};
+ pendingResult={id:Date.now()+'-'+(++recordSequence),owner:session.key,record,queued:true};writeLocal(PENDING_KEY,pendingResult);submitPending();
+}
 function complete(){
  if(run.practiceStage!==null){finishPractice();return;}
+ queueLiveRecord();
  if(profile){profile.clears++;saveProfile();}
  const score=run.penaltyTime,record=!best||score<best;if(record){best=score;writeLocal(BEST_KEY,best);}
- runOwnsSave=false;savedRun=null;removeLocal(SAVE_KEY);$('bestTime').textContent=timeText(best);$('resultTime').textContent=timeText(run.elapsed);$('resultScore').textContent=timeText(score);$('resultCoins').textContent=run.coins+' / '+run.totalCoins;$('resultFalls').textContent=run.falls;$('newRecord').hidden=!record;
- const result={nickname,timeMs:Math.round(run.elapsed*1000),falls:run.falls,coins:run.coins,checkpoints:run.visited.size,courseVersion:ParkourCore.COURSE_VERSION};
- if(!pendingResult||result.timeMs+result.falls*3000<pendingResult.record.timeMs+pendingResult.record.falls*3000){pendingResult={id:Date.now(),owner:session.key,record:result,queued:true};writeLocal(PENDING_KEY,pendingResult);}
- $('resultPlayer').textContent=nickname;$('submitStatus').textContent='완주 기록을 자동 등록하고 있습니다…';
+ runOwnsSave=false;savedRun=null;removeLocal(SAVE_KEY);$('bestTime').textContent=timeText(best);$('resultTime').textContent=timeText(run.elapsed);$('resultScore').textContent=timeText(score);$('resultCoins').textContent=run.coins+' / '+run.totalCoins;$('resultFalls').textContent=run.deaths;$('newRecord').hidden=!record;
+ $('resultPlayer').textContent=nickname;$('submitStatus').textContent='기록을 갱신하고 있습니다…';
  setMode('finished');const p=run.player;renderer.puff([p.x,p.y+2,p.z],[1,.61,.22],45);sound('finish');submitPending();
 }
 function syncHUD(){
@@ -946,31 +960,36 @@ function movement(){let x=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.h
 function frame(now){
  const dt=Math.min(.065,Math.max(0,(now-last)/1000||0));last=now;visualTime+=dt;
  if(phone){if(camSnap){lookYawTarget=yaw;lookPitchTarget=pitch;}else{const k=1-Math.exp(-dt*18);yaw+=(lookYawTarget-yaw)*k;pitch+=(lookPitchTarget-pitch)*k;}}
- if(mode==='playing'){accumulator+=dt;while(accumulator>=1/120){run.step(1/120,movement());accumulator-=1/120;}processEvents();saveClock+=dt;if(saveClock>3){saveClock=0;if(run.status!=='finished')scheduleSave();}}
- const lobbyView=['login','nickname','lobby','ranking','course','new','my','practiceResult','mechanic','settings'].includes(mode)&&rankReturn!=='finished';
+ if(mode==='playing'){accumulator+=dt;while(accumulator>=1/120){run.step(1/120,movement());accumulator-=1/120;}processEvents();queueLiveRecord();saveClock+=dt;if(saveClock>3){saveClock=0;if(run.status!=='finished')scheduleSave();}}
+ const lobbyView=['welcome','login','nickname','lobby','ranking','course','new','my','practiceResult','mechanic','settings'].includes(mode)&&rankReturn!=='finished';
  if(lobbyView){previewRun.time=visualTime;previewRun.updatePlatforms();}
  if(renderer&&mode!=='error'){renderer.render(lobbyView?previewRun:run,{lobby:lobbyView,phone,yaw,pitch,alpha:mode==='playing'?accumulator*120:1,snap:camSnap,time:mode==='playing'||mode==='paused'||mode==='help'?run.time:visualTime,paused:mode!=='playing'&&mode!=='finished'},dt);camSnap=false;}
  hudClock+=dt;if(hudClock>.075&&mode==='playing'){hudClock=0;syncHUD();}
  const recovering=mode==='playing'&&run.status==='recovering';$('respawnVeil').style.opacity=recovering?'.82':'0';
  requestAnimationFrame(frame);
 }
-function errorText(error){const messages={AUTH_REQUIRED:'다시 로그인해주세요.',STORAGE_FULL:'브라우저 저장 공간을 사용할 수 없습니다.',CONFIG_MISSING:'온라인 랭킹 연결 준비 중입니다. 완주 기록은 이 기기에 보관됩니다.',INVALID_RECORD:'닉네임과 기록을 확인해주세요. 닉네임은 1~20자입니다.',PERMISSION_DENIED:'랭킹 서버가 기록 저장을 허용하지 않았습니다. 잠시 후 다시 시도해주세요.',AUTH_FAILED:'랭킹 인증에 실패했습니다. 잠시 후 다시 시도해주세요.',OFFLINE:'인터넷 연결을 확인해주세요. 저장된 기록은 다시 등록할 수 있습니다.',TIMEOUT:'응답이 늦어지고 있습니다. 잠시 후 다시 시도해주세요.'};return messages[error?.code]||'랭킹 서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.';}
+function errorText(error){const messages={AUTH_REQUIRED:'다시 로그인해주세요.',STORAGE_FULL:'브라우저 저장 공간을 사용할 수 없습니다.',CONFIG_MISSING:'온라인 기록 연결 준비 중입니다. 기록은 이 기기에 보관됩니다.',INVALID_RECORD:'닉네임과 기록을 확인해주세요. 닉네임은 1~20자입니다.',PERMISSION_DENIED:'랭킹 서버가 기록 저장을 허용하지 않았습니다. 잠시 후 다시 시도해주세요.',AUTH_FAILED:'랭킹 인증에 실패했습니다. 잠시 후 다시 시도해주세요.',OFFLINE:'인터넷 연결을 확인해주세요. 저장된 기록은 다시 등록할 수 있습니다.',TIMEOUT:'응답이 늦어지고 있습니다. 잠시 후 다시 시도해주세요.'};return messages[error?.code]||'랭킹 서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.';}
 function timeout(promise){let handle;return Promise.race([promise,new Promise((_,reject)=>{handle=setTimeout(()=>{const e=new Error('timeout');e.code='TIMEOUT';reject(e);},14000);})]).finally(()=>clearTimeout(handle));}
-function renderRanking(entries){$('rankingList').replaceChildren();$('rankingStatus').textContent=entries.length?'':'아직 등록된 완주 기록이 없습니다. 첫 번째 주인공이 되어보세요.';entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),time=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=String(entry.nickname||'도약자');detail.textContent='재도전 '+entry.falls+'회 · 조각 '+entry.coins+'개';time.className='rank-time';time.textContent=timeText(entry.scoreMs/1000);person.append(name,detail);li.append(number,person,time);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});}
-function loadRanking(){rankingUnsubscribe?.();const request=++rankRequest;$('rankingList').replaceChildren();$('rankingStatus').textContent='실시간 기록을 연결하는 중입니다…';$('refreshRankBtn').disabled=true;rankingUnsubscribe=rankings.subscribeTop(entries=>{if(request!==rankRequest)return;renderRanking(entries);$('refreshRankBtn').disabled=false;},error=>{if(request===rankRequest){$('rankingStatus').textContent=errorText(error);$('refreshRankBtn').disabled=false;}});}
-function closeRanking(){rankRequest++;rankingUnsubscribe?.();rankingUnsubscribe=null;setMode(rankReturn);}
-function openRanking(){rankReturn=mode==='finished'?'finished':'lobby';setMode('ranking');$('rankingScope').textContent=rankings.localMode?'SKYBOUND / 이 기기 랭킹':'SKYBOUND / 실시간 온라인 랭킹';$('pendingBox').hidden=!pendingResult;$('pendingStatus').textContent=pendingResult?'자동 등록 대기 중':'';loadRanking();if(pendingResult)submitPending();}
+function renderRecords(entries){
+ $('rankingList').replaceChildren();$('rankingStatus').textContent=entries.length?'':'아직 기록이 없습니다. 게임을 시작하면 자동으로 등록됩니다.';
+ entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),coins=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=entry.nickname;detail.textContent='죽은 횟수 '+entry.deaths+'회 · 최고 '+entry.stage+'단계'+(entry.completed?' · 완주':'');coins.className='rank-time';coins.textContent='조각 '+entry.coins+'개';person.append(name,detail);li.append(number,person,coins);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});
+}
+async function loadRanking(){
+ const request=++rankRequest;if(stopRecords){stopRecords();stopRecords=null;}$('rankingStatus').textContent='기록을 불러오는 중입니다…';
+ try{const stop=await rankings.watch(entries=>{if(request===rankRequest&&mode==='ranking')renderRecords(entries);},error=>{if(request===rankRequest)$('rankingStatus').textContent=errorText(error);});if(request!==rankRequest||mode!=='ranking')stop();else stopRecords=stop;}catch(error){if(request===rankRequest)$('rankingStatus').textContent=errorText(error);}
+}
+function openRanking(){rankReturn=mode==='finished'?'finished':'lobby';setMode('ranking');$('rankingScope').textContent=rankings.localMode?'이 기기 기록':'실시간 기록';$('pendingBox').hidden=!pendingResult;loadRanking();if(pendingResult)submitPending();}
 async function submitPending(){
  if(submitting||!pendingResult||!session||pendingResult.owner!==session.key)return;
  clearTimeout(retryTimer);retryTimer=null;const current=pendingResult,pendingKey=PENDING_KEY,owner=session.key;
- submitting=true;current.queued=true;writeLocal(pendingKey,current);$('submitStatus').textContent=$('pendingStatus').textContent='완주 기록을 자동 등록하고 있습니다…';
+ submitting=true;current.queued=true;writeLocal(pendingKey,current);$('submitStatus').textContent=$('pendingStatus').textContent='기록을 갱신하고 있습니다…';
  try{
   const result=await timeout(rankings.submit(current.record));
   if(session?.key!==owner)return;
   if(pendingResult?.id===current.id){pendingResult=null;removeLocal(pendingKey);}
   retryDelay=2000;$('pendingBox').hidden=!pendingResult;
-  $('submitStatus').textContent=$('pendingStatus').textContent=result.saved?(result.local?'이 기기 랭킹에 자동 등록했습니다.':'온라인 랭킹에 자동 등록했습니다.'):'자동 등록 확인 · 기존 최고 기록을 유지합니다.';
-  if(mode==='ranking')loadRanking();
+  $('submitStatus').textContent=$('pendingStatus').textContent=result.saved?(result.local?'이 기기 랭킹에 자동 등록했습니다.':'온라인 랭킹에 자동 등록했습니다.'):'기록을 갱신했습니다.';
+  
  }catch(error){
   if(session?.key===owner){$('submitStatus').textContent=$('pendingStatus').textContent=errorText(error)+' 자동 재시도 대기 중';retryTimer=setTimeout(submitPending,retryDelay);retryDelay=Math.min(60000,retryDelay*2);}
  }finally{submitting=false;if(pendingResult&&session?.key===owner&&retryTimer===null)retryTimer=setTimeout(submitPending,1000);}
@@ -1014,15 +1033,14 @@ function finishPractice(){
  if(profile&&!run.practiceMechanic&&run.elapsed>0&&(profile.practiceBest[stage]===null||run.elapsed<profile.practiceBest[stage])){profile.practiceBest[stage]=run.elapsed;saveProfile();}
  $('practiceTitle').textContent=run.practiceMechanic?MECHANICS.find(m=>m.type===run.practiceMechanic).name+' 연습 완료':(stage+1)+'구역 · '+ParkourCore.ZONES[stage].name;$('practiceStats').textContent='연습 완료 · '+timeText(run.elapsed)+' · 데스 '+run.deaths+'회';setMode('practiceResult');sound('checkpoint');
 }
- async function selectAccount(uid,guest,displayName=''){
-  const key=(guest?'guest:':'google:')+uid;session={uid,key,guest};MY_KEY='skybound-my-v1:'+key;loadProfile();
- SAVE_KEY='skybound-run-v9:'+key;BEST_KEY='skybound-best-v10:'+key;PENDING_KEY='skybound-pending-v9:'+key;NAME_KEY='skybound-name-v7:'+key;
-  savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
+async function selectAccount(uid,local,displayName=''){
+ const key=(local?'guest:':'online:')+uid;session={uid,key,local};MY_KEY='skybound-my-v1:'+key;loadProfile();
+ SAVE_KEY='skybound-run-v9:'+key;BEST_KEY='skybound-best-v10:'+key;PENDING_KEY='skybound-live-pending-v1:'+key;NAME_KEY='skybound-name-v7:'+key;
+ savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
  if(savedRun)profile.unlocked=Math.max(profile.unlocked,Math.min(ParkourCore.ZONES.length-1,savedRun.run.visited.length));if(profile.clears)profile.unlocked=ParkourCore.ZONES.length-1;saveProfile();
- pendingResult=readLocal(PENDING_KEY);if(pendingResult?.owner!==key||pendingResult?.record?.courseVersion!==ParkourCore.COURSE_VERSION)pendingResult=null;
- best=Number(readLocal(BEST_KEY,0));if(!Number.isFinite(best)||best<0)best=0;
-  nickname=readLocal(NAME_KEY,displayName);if(typeof nickname!=='string')nickname='';
-  if(!rankings.localMode){
+  pendingResult=readLocal(PENDING_KEY);if(pendingResult?.owner!==key||pendingResult?.record?.courseVersion!==ParkourCore.COURSE_VERSION)pendingResult=null;
+  best=Number(readLocal(BEST_KEY,0));if(!Number.isFinite(best)||best<0)best=0;
+  if(!local){
    try{
     const cloud=await rankings.loadProgress();
     if(session?.key!==key)return;
@@ -1030,18 +1048,24 @@ function finishPractice(){
     else if(savedRun)syncCloudProgress(savedRun);
    }catch(error){console.warn('Cloud progress unavailable',error);}
   }
-  $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
+  nickname=await rankings.getNickname(readLocal(NAME_KEY,displayName)||'');recordSignature='';
+ if(nickname){writeLocal(NAME_KEY,nickname);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(local?'게스트 나가기':'로그아웃');setMode('lobby');if(pendingResult)submitPending();return;}
+ $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
 }
-function authError(error){const code=String(error?.code||'');if(code.includes('popup-closed-by-user'))return '로그인 창이 닫혔습니다.';if(code.includes('popup-blocked'))return '팝업이 차단되었습니다. 브라우저 설정을 확인해주세요.';if(code.includes('account-exists-with-different-credential'))return '이 이메일은 다른 로그인 방식으로 이미 사용 중입니다.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return 'Firebase Authentication에서 Google 및 익명 로그인을 활성화해주세요.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
-async function signIn(kind){if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('guestBtn').disabled=true;$('loginStatus').textContent=kind==='google'?'Google 로그인 창을 여는 중입니다…':'게스트 계정을 만드는 중입니다…';try{const user=kind==='google'?await rankings.loginWithGoogle():await rankings.loginAsGuest();$('loginStatus').textContent='저장된 진행 상황을 확인하는 중입니다…';await selectAccount(user.uid,kind==='guest',user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('guestBtn').disabled=false;}}
-$('googleBtn').addEventListener('click',()=>signIn('google'));
-$('guestBtn').addEventListener('click',()=>signIn('guest'));
+function authError(error){if(error?.code==='NICKNAME_LOCKED')return '닉네임은 처음 설정한 이름으로 고정됩니다.';const code=String(error?.code||'');if(code.includes('invalid-email'))return '이메일 주소를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일입니다. 로그인으로 전환해주세요.';if(code.includes('weak-password'))return '더 강한 비밀번호를 사용해주세요.';if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return '온라인 계정 연결이 아직 준비되지 않았습니다.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(authBusy||!rankings.configured)return;authBusy=true;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent=accountCreating?'계정을 만드는 중입니다…':'로그인 중입니다…';
+ try{const user=await rankings.login($('loginEmail').value.trim(),$('loginPassword').value,accountCreating);await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{$('loginPassword').value='';authBusy=false;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}
+});
+$('createAccountBtn').addEventListener('click',()=>{accountCreating=!accountCreating;$('loginSubmit').textContent=accountCreating?'계정 만들기':'로그인';$('loginPassword').autocomplete=accountCreating?'new-password':'current-password';$('createAccountBtn').textContent=accountCreating?'계정이 있어요 · 로그인':'처음이신가요? 계정 만들기';$('loginStatus').textContent='';});
+$('guestBtn').addEventListener('click',async()=>{if(authBusy)return;let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}rankings.useGuest(uid);try{await selectAccount(uid,true);}catch(error){$('loginStatus').textContent=authError(error);}});
 $('nicknameForm').addEventListener('submit',async e=>{
- e.preventDefault();if(authBusy||!session)return;const name=$('nicknameInput').value.trim();if(!name||name.length>20){$('nicknameStatus').textContent='닉네임을 1~20자로 입력해주세요.';return;}
+ e.preventDefault();if(authBusy||!session||nickname)return;const name=$('nicknameInput').value.trim();if(!name||name.length>20){$('nicknameStatus').textContent='닉네임을 1~20자로 입력해주세요.';return;}
  authBusy=true;$('nicknameSubmit').disabled=$('nicknameBack').disabled=true;
-  try{await rankings.setNickname(name);nickname=name;writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(session.guest?'게스트 나가기':'로그아웃');setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
+ try{nickname=await rankings.setNickname(name);writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(session.local?'게스트 나가기':'로그아웃');setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
 });
 async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('login');}catch(error){toast(authError(error));}finally{authBusy=false;}}
+$('enterGameBtn').addEventListener('click',()=>setMode('login'));
 $('nicknameBack').addEventListener('click',exitAccount);$('accountBtn').addEventListener('click',exitAccount);
 function openCourse(){
  courseReturn=mode==='paused'?'paused':mode==='playing'?'paused':'lobby';if(mode==='playing'){run.pause();saveRun();}
@@ -1059,11 +1083,11 @@ $('startBtn').addEventListener('click',requestNew);$('continueBtn').addEventList
 $('retryBtn').addEventListener('click',start);$('pauseBtn').addEventListener('click',pause);$('resumeBtn').addEventListener('click',pause);$('homeBtn').addEventListener('click',goHome);$('resultHomeBtn').addEventListener('click',()=>{rankReturn='lobby';goHome();});
 for(const id of ['soundBtn','gameSound','pauseSound'])$(id).addEventListener('click',toggleSound);
 $('helpBtn').addEventListener('click',()=>setMode('help'));$('closeHelpBtn').addEventListener('click',()=>setMode('settings'));$('cameraBtn').addEventListener('click',()=>{yaw=0;pitch=.58;camSnap=true;});$('reloadBtn').addEventListener('click',()=>location.reload());
-$('rankBtn').addEventListener('click',openRanking);$('resultRankBtn').addEventListener('click',openRanking);$('closeRankBtn').addEventListener('click',closeRanking);$('refreshRankBtn').addEventListener('click',loadRanking);
+$('rankBtn').addEventListener('click',openRanking);$('resultRankBtn').addEventListener('click',openRanking);$('closeRankBtn').addEventListener('click',()=>{rankRequest++;setMode(rankReturn);});$('refreshRankBtn').addEventListener('click',loadRanking);
 $('practiceMenuBtn').addEventListener('click',openCourse);$('closeCourseBtn').addEventListener('click',()=>setMode(courseReturn));
 
 $('jumpBtn').addEventListener('pointerdown',e=>{e.preventDefault();if(mode==='playing')run.requestJump();});$('jumpBtn').addEventListener('click',e=>{if(e.detail===0&&mode==='playing')run.requestJump();});
-window.addEventListener('keydown',e=>{if(e.repeat||['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(e.code==='Escape'||e.code==='KeyP'){if(mode==='help')setMode('settings');else if(mode==='settings')setMode(settingsReturn);else if(mode==='mechanic')openCourse();else if(mode==='ranking')closeRanking();else if(mode==='my')setMode(myReturn);else if(mode==='course')setMode(courseReturn);else if(mode==='new')setMode('lobby');else if(mode==='practiceResult')goHome();else pause();return;}if(mode!=='playing')return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(e.code==='Space')run.requestJump();if(e.code==='KeyR')run.recover(true);if(e.code==='KeyC'){yaw=0;pitch=.58;camSnap=true;}});window.addEventListener('keyup',e=>keys.delete(e.code));
+window.addEventListener('keydown',e=>{if(e.repeat||['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(e.code==='Escape'||e.code==='KeyP'){if(mode==='help')setMode('settings');else if(mode==='settings')setMode(settingsReturn);else if(mode==='mechanic')openCourse();else if(mode==='ranking'){rankRequest++;setMode(rankReturn);}else if(mode==='my')setMode(myReturn);else if(mode==='course')setMode(courseReturn);else if(mode==='new')setMode('lobby');else if(mode==='practiceResult')goHome();else pause();return;}if(mode!=='playing')return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(e.code==='Space')run.requestJump();if(e.code==='KeyR')run.recover(true);if(e.code==='KeyC'){yaw=0;pitch=.58;camSnap=true;}});window.addEventListener('keyup',e=>keys.delete(e.code));
 canvas.addEventListener('pointerdown',e=>{if(mode!=='playing'||e.button>0)return;e.preventDefault();try{canvas.setPointerCapture(e.pointerId);}catch{}if(e.pointerType==='touch'&&e.clientX<innerWidth*.48&&movePointer===null){movePointer=e.pointerId;originX=e.clientX;originY=e.clientY;stickX=stickY=0;$('joystick').style.left=originX+'px';$('joystick').style.top=originY+'px';$('joystick').hidden=false;$('stick').style.transform='translate(0,0)';$('moveHint').style.opacity='0';}else if(lookPointer===null){lookPointer=e.pointerId;lookX=e.clientX;lookY=e.clientY;lookYawTarget=yaw;lookPitchTarget=pitch;}});
 canvas.addEventListener('pointermove',e=>{if(e.pointerId===movePointer){const dx=e.clientX-originX,dy=e.clientY-originY,d=Math.max(43,Math.hypot(dx,dy));stickX=dx/d;stickY=dy/d;$('stick').style.transform='translate('+stickX*34+'px,'+stickY*34+'px)';}else if(e.pointerId===lookPointer){if(phone){lookYawTarget+=(e.clientX-lookX)*.0038;lookPitchTarget=clamp(lookPitchTarget+(e.clientY-lookY)*.0028,.30,1.02);}else{yaw+=(e.clientX-lookX)*.005;pitch=clamp(pitch+(e.clientY-lookY)*.004,.28,1.05);}lookX=e.clientX;lookY=e.clientY;}});
 function release(e){if(e.pointerId===movePointer){movePointer=null;stickX=stickY=0;$('joystick').hidden=true;}if(e.pointerId===lookPointer)lookPointer=null;}
@@ -1078,9 +1102,9 @@ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();modeBeforeCont
 canvas.addEventListener('webglcontextrestored',()=>{try{renderer=new SkyRenderer(canvas);camSnap=true;setMode(!session?'login':modeBeforeContextLoss==='nickname'?'nickname':run.status==='practiceFinished'?'practiceResult':run.status==='finished'?'finished':['lobby','ranking','course','new','my'].includes(modeBeforeContextLoss)?'lobby':'paused');}catch{setMode('error');}});
 document.querySelectorAll('[data-cp]').forEach(e=>e.remove());for(const id of run.checkpointIds){const el=document.createElement('i');el.className='progress-dot';el.dataset.cp=id;el.style.left=run.platforms[id].progress*100+'%';document.querySelector('.progress-track').append(el);}
 syncSound();syncLobby();
-if(!rankings.configured){$('googleBtn').hidden=true;$('loginExplain').textContent='온라인 로그인은 Firebase 설정 후 사용할 수 있습니다. 지금은 게스트로 닉네임을 정하고 플레이할 수 있으며, 기록은 이 기기에 자동 저장됩니다.';}
+$('loginForm').hidden=$('createAccountBtn').hidden=!rankings.configured;if(!rankings.configured)$('loginExplain').textContent='온라인 로그인은 서버 연결 후 사용할 수 있습니다. 지금은 게스트로 닉네임을 정하고 플레이할 수 있으며, 기록은 이 기기에 자동 저장됩니다.';
 try{renderer=new SkyRenderer(canvas);}catch(error){console.error('3D renderer:',error);setMode('error');}
-if(renderer)setMode('login');
+if(renderer)setMode('welcome');
 requestAnimationFrame(frame);
 
 </script>

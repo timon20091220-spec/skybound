@@ -17,7 +17,7 @@ service cloud.firestore {
         && request.resource.data.nickname.size() <= 20
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.timeMs is int
-        && request.resource.data.timeMs >= 1
+        && request.resource.data.timeMs >= 0
         && request.resource.data.timeMs <= 86400000
         && request.resource.data.falls is int
         && request.resource.data.falls >= 0
@@ -26,23 +26,34 @@ service cloud.firestore {
         && request.resource.data.coins >= 0
         && request.resource.data.coins <= 10000
         && request.resource.data.checkpoints is int
-        && request.resource.data.checkpoints == 14
+        && request.resource.data.checkpoints >= 0
+        && request.resource.data.checkpoints <= 14
+        && request.resource.data.deaths is int
+        && request.resource.data.deaths >= 0
+        && request.resource.data.deaths <= 100000
+        && request.resource.data.stage is int
+        && request.resource.data.stage >= 1
+        && request.resource.data.stage <= 15
+        && request.resource.data.completed is bool
         && request.resource.data.scoreMs is int
-        && request.resource.data.scoreMs >= 1
+        && request.resource.data.scoreMs >= 0
         && request.resource.data.scoreMs <= 116400000
         && request.resource.data.scoreMs == request.resource.data.timeMs + request.resource.data.falls * 3000;
     }
 
-    match /rankings/{version}/scores/{uid} {
-      allow read, list: if true;
-      allow create: if signedIn() && uid == request.auth.uid && validRecord(version);
-      allow update: if signedIn() && uid == request.auth.uid && validRecord(version)
-                    && request.resource.data.scoreMs < resource.data.scoreMs;
-      allow delete: if false;
+    match /players/{uid} {
+      allow read, write: if signedIn() && uid == request.auth.uid;
     }
 
     match /players/{uid}/progress/{version} {
       allow read, write: if signedIn() && uid == request.auth.uid;
+    }
+
+    match /rankings/{version}/records/{uid} {
+      allow read, list: if true;
+      allow create: if signedIn() && uid == request.auth.uid && validRecord(version);
+      allow update: if signedIn() && uid == request.auth.uid && validRecord(version);
+      allow delete: if false;
     }
   }
 }

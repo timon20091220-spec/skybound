@@ -13,6 +13,8 @@ firebase login
 firebase deploy --only firestore:rules
 ```
 
+The game also stores the active run at `players/{uid}/progress/{courseVersion}`. Google sign-in restores that run across devices; anonymous guest accounts are device-specific unless linked to a permanent provider.
+
 4. Open `index.html` through a local web server or GitHub Pages. Do not use `file://`, because Google sign-in requires an authorized HTTP(S) origin.
 
 The Firebase Web App Config in `index.html` is public client configuration. Never add a service-account JSON file, private key, or other server credential to this repository.

@@ -40,5 +40,9 @@ service cloud.firestore {
                     && request.resource.data.scoreMs < resource.data.scoreMs;
       allow delete: if false;
     }
+
+    match /players/{uid}/progress/{version} {
+      allow read, write: if signedIn() && uid == request.auth.uid;
+    }
   }
 }

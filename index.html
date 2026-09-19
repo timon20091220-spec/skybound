@@ -750,6 +750,23 @@ class SkyRanking{
     const {sdk,auth}=await this._services();if(!auth.currentUser||auth.currentUser.uid!==this._uid)throw codedError('AUTH_REQUIRED','Login required');
     await sdk.updateProfile(auth.currentUser,{displayName:name});
   }
+  async loadProgress(){
+    if(this.localMode||!this._uid)return null;
+    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+    try{
+      const ref=sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION),snapshot=await sdk.getDoc(ref);
+      return snapshot.exists()?snapshot.data():null;
+    }catch(error){throw serviceError(error);}
+  }
+  async saveProgress(progress){
+    if(this.localMode||!this._uid)return false;
+    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+    try{
+      const ref=sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION);
+      await sdk.setDoc(ref,{...progress,uid:user.uid,courseVersion:COURSE_VERSION,updatedAt:sdk.serverTimestamp()},{merge:true});
+      return true;
+    }catch(error){throw serviceError(error);}
+  }
   async logout(){if(!this.localMode){const {sdk,auth}=await this._services();await sdk.signOut(auth);}this._uid=null;}
   localScores(){try{const rows=JSON.parse(localStorage.getItem('skybound-local-scores-'+COURSE_VERSION)||'[]');return Array.isArray(rows)?rows.filter(row=>row&&typeof row.uid==='string'&&Number.isFinite(row.scoreMs)):[];}catch{return [];}}
   async _authenticate(services){
@@ -831,7 +848,7 @@ function writeLocal(key,value){try{localStorage.setItem(key,JSON.stringify(value
 function removeLocal(key){try{localStorage.removeItem(key);}catch{}}
 let practiceReturn=null,settingsReturn='lobby',selectedMechanic=null;
 let MY_KEY='',myReturn='lobby',courseReturn='lobby',profile=null;
-let savedRun=null,pendingResult=null,nickname='',session=null,authBusy=false,retryTimer=null,retryDelay=2000,rankingUnsubscribe=null;
+ let savedRun=null,pendingResult=null,nickname='',session=null,authBusy=false,retryTimer=null,retryDelay=2000,rankingUnsubscribe=null,cloudSaveBusy=false,cloudSaveSerial=0;
 try{muted=localStorage.getItem('skybound-muted-v1')!=='false';}catch{}
 const rankings=new SkyRanking(globalThis.SKYBOUND_FIREBASE_CONFIG);
 function timeText(t){const n=Math.floor(Math.max(0,t)*10),m=Math.floor(n/600),sec=Math.floor(n/10)%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')+'.'+n%10;}
@@ -856,10 +873,22 @@ function syncLobby(){
 }
 let saveJob=null;
 function scheduleSave(){if(saveJob!==null)return;const save=()=>{saveJob=null;if(mode==='playing'&&runOwnsSave&&run.status!=='finished')saveRun();};saveJob=window.requestIdleCallback?window.requestIdleCallback(save,{timeout:1200}):setTimeout(save,0);}
-function saveRun(){
- if(!runOwnsSave||run.practiceStage!==null||run.status==='finished')return;
- unlockStage(run.stage);savedRun={run:run.snapshot(),camera:{yaw,pitch},savedAt:Date.now()};saveWorks=writeLocal(SAVE_KEY,savedRun);
-}
+ function saveRun(){
+  if(!runOwnsSave||run.practiceStage!==null||run.status==='finished')return;
+  unlockStage(run.stage);savedRun={run:run.snapshot(),camera:{yaw,pitch},savedAt:Date.now()};saveWorks=writeLocal(SAVE_KEY,savedRun);syncCloudProgress(savedRun);
+ }
+ let cloudSaveJob=null;
+ function syncCloudProgress(progress){
+  if(!progress||rankings.localMode||!session)return;
+  const serial=++cloudSaveSerial;clearTimeout(cloudSaveJob);
+  cloudSaveJob=setTimeout(async()=>{
+   if(serial!==cloudSaveSerial||!session)return;
+   cloudSaveBusy=true;const owner=session.key;
+   try{await rankings.saveProgress(progress);if(session?.key===owner)saveWorks=true;}
+   catch(error){if(session?.key===owner)saveWorks=false;}
+   finally{cloudSaveBusy=false;}
+  },250);
+ }
 function start(){
  if(!session||!nickname){setMode('login');return;}
  if(!renderer){setMode('error');return;}
@@ -985,18 +1014,26 @@ function finishPractice(){
  if(profile&&!run.practiceMechanic&&run.elapsed>0&&(profile.practiceBest[stage]===null||run.elapsed<profile.practiceBest[stage])){profile.practiceBest[stage]=run.elapsed;saveProfile();}
  $('practiceTitle').textContent=run.practiceMechanic?MECHANICS.find(m=>m.type===run.practiceMechanic).name+' 연습 완료':(stage+1)+'구역 · '+ParkourCore.ZONES[stage].name;$('practiceStats').textContent='연습 완료 · '+timeText(run.elapsed)+' · 데스 '+run.deaths+'회';setMode('practiceResult');sound('checkpoint');
 }
- function selectAccount(uid,guest,displayName=''){
+ async function selectAccount(uid,guest,displayName=''){
   const key=(guest?'guest:':'google:')+uid;session={uid,key,guest};MY_KEY='skybound-my-v1:'+key;loadProfile();
  SAVE_KEY='skybound-run-v9:'+key;BEST_KEY='skybound-best-v10:'+key;PENDING_KEY='skybound-pending-v9:'+key;NAME_KEY='skybound-name-v7:'+key;
- savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
+  savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
  if(savedRun)profile.unlocked=Math.max(profile.unlocked,Math.min(ParkourCore.ZONES.length-1,savedRun.run.visited.length));if(profile.clears)profile.unlocked=ParkourCore.ZONES.length-1;saveProfile();
  pendingResult=readLocal(PENDING_KEY);if(pendingResult?.owner!==key||pendingResult?.record?.courseVersion!==ParkourCore.COURSE_VERSION)pendingResult=null;
  best=Number(readLocal(BEST_KEY,0));if(!Number.isFinite(best)||best<0)best=0;
- nickname=readLocal(NAME_KEY,displayName);if(typeof nickname!=='string')nickname='';
- $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
+  nickname=readLocal(NAME_KEY,displayName);if(typeof nickname!=='string')nickname='';
+  if(!rankings.localMode){
+   try{
+    const cloud=await rankings.loadProgress();
+    if(session?.key!==key)return;
+    if(cloud?.run&&(!savedRun||Number(cloud.savedAt||0)>Number(savedRun.savedAt||0))){savedRun=cloud;writeLocal(SAVE_KEY,savedRun);}
+    else if(savedRun)syncCloudProgress(savedRun);
+   }catch(error){console.warn('Cloud progress unavailable',error);}
+  }
+  $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
 }
 function authError(error){const code=String(error?.code||'');if(code.includes('popup-closed-by-user'))return '로그인 창이 닫혔습니다.';if(code.includes('popup-blocked'))return '팝업이 차단되었습니다. 브라우저 설정을 확인해주세요.';if(code.includes('account-exists-with-different-credential'))return '이 이메일은 다른 로그인 방식으로 이미 사용 중입니다.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return 'Firebase Authentication에서 Google 및 익명 로그인을 활성화해주세요.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
-async function signIn(kind){if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('guestBtn').disabled=true;$('loginStatus').textContent=kind==='google'?'Google 로그인 창을 여는 중입니다…':'게스트 계정을 만드는 중입니다…';try{const user=kind==='google'?await rankings.loginWithGoogle():await rankings.loginAsGuest();selectAccount(user.uid,kind==='guest',user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('guestBtn').disabled=false;}}
+async function signIn(kind){if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('guestBtn').disabled=true;$('loginStatus').textContent=kind==='google'?'Google 로그인 창을 여는 중입니다…':'게스트 계정을 만드는 중입니다…';try{const user=kind==='google'?await rankings.loginWithGoogle():await rankings.loginAsGuest();$('loginStatus').textContent='저장된 진행 상황을 확인하는 중입니다…';await selectAccount(user.uid,kind==='guest',user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('guestBtn').disabled=false;}}
 $('googleBtn').addEventListener('click',()=>signIn('google'));
 $('guestBtn').addEventListener('click',()=>signIn('guest'));
 $('nicknameForm').addEventListener('submit',async e=>{

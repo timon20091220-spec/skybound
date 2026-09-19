@@ -763,15 +763,15 @@ class SkyRanking{
     if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
     if(this.localMode){const old=localStorage.getItem('skybound-locked-name:'+this._uid);if(old)return old;if(fallback)return this.setNickname(fallback);return '';}
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    const doc=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(doc.exists()&&doc.data().nickname)return doc.data().nickname;
-    return user.displayName?this.setNickname(user.displayName):'';
+     const doc=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(doc.exists()&&doc.data().nickname)return doc.data().nickname;
+     return '';
   }
   async setNickname(name){
     name=normalizeNickname(name);if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
     if(this.localMode){const key='skybound-locked-name:'+this._uid,old=localStorage.getItem(key);if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');localStorage.setItem(key,old||name);return old||name;}
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
     const ref=sdk.doc(db,'players',user.uid);
-     return sdk.runTransaction(db,async tx=>{const doc=await tx.get(ref),old=doc.exists()?doc.data().nickname:user.displayName;if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');if(!doc.exists())tx.set(ref,{nickname:old||name,createdAt:sdk.serverTimestamp()});return old||name;});
+      return sdk.runTransaction(db,async tx=>{const doc=await tx.get(ref),old=doc.exists()?doc.data().nickname:'';if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');if(!doc.exists())tx.set(ref,{nickname:name,createdAt:sdk.serverTimestamp()});return old||name;});
    }
   async loadProgress(){
     if(this.localMode||!this._uid)return null;

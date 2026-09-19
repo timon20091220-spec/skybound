@@ -38,6 +38,7 @@
 }
 body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{pointer-events:auto}.practice-tabs{display:flex;gap:10px;margin:18px 0}.practice-tabs button{flex:1}.practice-tabs button[aria-selected="true"]{background:#238c83;color:white}.zone-item:disabled{opacity:.4;cursor:default}.mechanic-description{line-height:1.9!important;text-align:left;padding:18px;border-radius:16px;background:#e6f2ec}.checkpoint-celebration{position:absolute;top:27%;left:50%;z-index:4;pointer-events:none;transform:translateX(-50%);color:#fffaf0;text-shadow:0 2px 14px #166963;font-weight:800;font-size:clamp(22px,4vw,36px);letter-spacing:3px;white-space:nowrap;opacity:0}.checkpoint-celebration.show{animation:checkpoint-bloom 2s ease both}.checkpoint-celebration:before,.checkpoint-celebration:after{content:'✦';color:#ffe094;font-size:.7em;margin:0 16px}@keyframes checkpoint-bloom{0%{opacity:0;transform:translate(-50%,14px) scale(.85)}18%,70%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-14px) scale(1.03)}}
 .welcome-panel{background:#f7faf0e8;padding:44px 38px}.welcome-panel h1{font-size:clamp(56px,14vw,88px);margin:18px 0 35px}.welcome-panel h1 span{display:block;color:var(--orange)}@media(max-height:500px){.welcome-panel{padding:20px 32px}.welcome-panel h1{font-size:54px;margin:10px 0 20px}}
+.login-choice{display:grid;gap:12px}.provider-button{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid #d5e1d9;color:var(--ink);box-shadow:0 5px 14px #24464b0b}.provider-button:hover{background:#fbfdf9}.provider-icon{width:20px;height:20px;flex:none}.login-divider{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:#8aa199;font-size:9px;letter-spacing:1px}.login-divider:before,.login-divider:after{content:"";height:1px;flex:1;background:var(--line)}
 </style>
 </head>
 <body>
@@ -70,10 +71,10 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 <section id="welcomeScreen" class="screen overlay" hidden><div class="panel welcome-panel"><div class="eyebrow">A LITTLE HIGHER</div><h1>SKY<span>BOUND</span></h1><button id="enterGameBtn" class="primary">게임 시작하기<svg><use href="#play"/></svg></button></div></section>
 <section id="loginScreen" class="screen overlay" hidden><div class="panel">
 <div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 전에도 조각·죽은 횟수·최고 단계가 자동 반영됩니다.</p>
-<form id="loginForm" class="auth-form"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="254" placeholder="you@example.com">
+  <div class="login-choice"><button id="googleBtn" class="secondary provider-button" type="button"><svg class="provider-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.27c0-.71-.06-1.39-.18-2.05H12v3.88h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.15c1.85-1.7 2.9-4.2 2.9-7.22z"/><path fill="#34A853" d="M12 21.75c2.65 0 4.88-.88 6.5-2.38l-3.15-2.45c-.87.58-1.98.92-3.35.92-2.57 0-4.75-1.74-5.53-4.08H3.22v2.53A9.82 9.82 0 0 0 12 21.75z"/><path fill="#FBBC05" d="M6.47 13.76a5.9 5.9 0 0 1 0-3.52V7.71H3.22a9.75 9.75 0 0 0 0 8.58l3.25-2.53z"/><path fill="#EA4335" d="M12 6.16c1.45 0 2.75.5 3.77 1.48l2.82-2.82C16.87 3.2 14.65 2.25 12 2.25a9.82 9.82 0 0 0-8.78 5.46l3.25 2.53C7.25 7.9 9.43 6.16 12 6.16z"/></svg>Google 계정으로 계속하기</button></div><div class="login-divider"><span>또는 이메일</span></div><form id="loginForm" class="auth-form"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="254" placeholder="you@example.com">
 <label for="loginPassword">비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="비밀번호">
- <button id="loginSubmit" class="primary" type="submit">로그인</button></form><button id="googleBtn" class="secondary">Google 계정으로 계속하기</button><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
-<button id="createAccountBtn" class="text-button">처음이신가요? 계정 만들기</button><button id="guestBtn" class="secondary">이 기기에서 게스트로 플레이</button><p class="tiny">게스트 기록은 이 브라우저에만 저장됩니다.</p>
+ <button id="loginSubmit" class="primary" type="submit">로그인</button></form><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
+  <button id="createAccountBtn" class="text-button">처음이신가요? 계정 만들기</button>
 </div></section>
 <section id="nicknameScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">YOUR ADVENTURE</div><h2>닉네임을 정해주세요</h2><p>한 번 정한 닉네임은 변경할 수 없습니다.</p><form id="nicknameForm" class="auth-form"><label for="nicknameInput">닉네임 · 1~20자</label><input id="nicknameInput" autocomplete="nickname" maxlength="20" required placeholder="하늘을 달리는 이름"><button id="nicknameSubmit" class="primary" type="submit">이 이름으로 시작</button></form><p id="nicknameStatus" class="rank-status" role="status"></p><button id="nicknameBack" class="text-button">로그인으로 돌아가기</button></div></section>
 <section id="practiceScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">PRACTICE COMPLETE</div><h2 id="practiceTitle">구역 연습 완료</h2><p id="practiceStats"></p><button id="practiceRetryBtn" class="primary">같은 구역 다시 연습</button><button id="practiceChooseBtn" class="secondary">다른 구역 선택</button><button id="practiceReturnBtn" class="secondary" hidden>원래 게임으로 돌아가기</button><button id="practiceHomeBtn" class="text-button">로비로 돌아가기</button></div></section>
@@ -758,7 +759,6 @@ class SkyRanking{
     const result=await sdk.signInWithPopup(auth,provider);
     this.localMode=false;this._uid=result.user.uid;return result.user;
   }
-  useGuest(uid){this.localMode=true;this._uid=uid;}
   async getNickname(fallback=''){
     if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
     if(this.localMode){const old=localStorage.getItem('skybound-locked-name:'+this._uid);if(old)return old;if(fallback)return this.setNickname(fallback);return '';}
@@ -974,7 +974,7 @@ function errorText(error){const messages={AUTH_REQUIRED:'다시 로그인해주�
 function timeout(promise){let handle;return Promise.race([promise,new Promise((_,reject)=>{handle=setTimeout(()=>{const e=new Error('timeout');e.code='TIMEOUT';reject(e);},14000);})]).finally(()=>clearTimeout(handle));}
 function renderRecords(entries){
  $('rankingList').replaceChildren();$('rankingStatus').textContent=entries.length?'':'아직 기록이 없습니다. 게임을 시작하면 자동으로 등록됩니다.';
- entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),coins=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=entry.nickname;detail.textContent='죽은 횟수 '+entry.deaths+'회 · 최고 '+entry.stage+'단계'+(entry.completed?' · 완주':'');coins.className='rank-time';coins.textContent='조각 '+entry.coins+'개';person.append(name,detail);li.append(number,person,coins);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});
+  entries.forEach((entry,i)=>{const li=document.createElement('li'),number=document.createElement('span'),person=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small'),coins=document.createElement('span');number.className='rank-number';number.textContent=String(i+1).padStart(2,'0');person.className='rank-person';name.textContent=entry.nickname;detail.textContent='죽은 횟수 '+entry.deaths+'회 · 최고 '+entry.stage+'단계'+(entry.completed?' · 완주':'');coins.className='rank-time';coins.textContent='조각 '+entry.coins+'개 · '+timeText(entry.timeMs/1000);person.append(name,detail);li.append(number,person,coins);if(entry.uid===rankings.uid)li.classList.add('mine');$('rankingList').append(li);});
 }
 async function loadRanking(){
  const request=++rankRequest;if(stopRecords){stopRecords();stopRecords=null;}$('rankingStatus').textContent='기록을 불러오는 중입니다…';
@@ -1035,8 +1035,8 @@ function finishPractice(){
  if(profile&&!run.practiceMechanic&&run.elapsed>0&&(profile.practiceBest[stage]===null||run.elapsed<profile.practiceBest[stage])){profile.practiceBest[stage]=run.elapsed;saveProfile();}
  $('practiceTitle').textContent=run.practiceMechanic?MECHANICS.find(m=>m.type===run.practiceMechanic).name+' 연습 완료':(stage+1)+'구역 · '+ParkourCore.ZONES[stage].name;$('practiceStats').textContent='연습 완료 · '+timeText(run.elapsed)+' · 데스 '+run.deaths+'회';setMode('practiceResult');sound('checkpoint');
 }
-async function selectAccount(uid,local,displayName=''){
- const key=(local?'guest:':'online:')+uid;session={uid,key,local};MY_KEY='skybound-my-v1:'+key;loadProfile();
+ async function selectAccount(uid,local,displayName=''){
+  const key=(local?'guest:':'online:')+uid;session={uid,key,local};MY_KEY='skybound-my-v1:'+key;loadProfile();
  SAVE_KEY='skybound-run-v9:'+key;BEST_KEY='skybound-best-v10:'+key;PENDING_KEY='skybound-live-pending-v1:'+key;NAME_KEY='skybound-name-v7:'+key;
  savedRun=readLocal(SAVE_KEY);if(savedRun?.run){const test=new ParkourCore.Run();if(!test.restore(savedRun.run))savedRun=null;}else savedRun=null;
  if(savedRun)profile.unlocked=Math.max(profile.unlocked,Math.min(ParkourCore.ZONES.length-1,savedRun.run.visited.length));if(profile.clears)profile.unlocked=ParkourCore.ZONES.length-1;saveProfile();
@@ -1051,23 +1051,22 @@ async function selectAccount(uid,local,displayName=''){
    }catch(error){console.warn('Cloud progress unavailable',error);}
   }
   nickname=await rankings.getNickname(readLocal(NAME_KEY,displayName)||'');recordSignature='';
- if(nickname){writeLocal(NAME_KEY,nickname);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(local?'게스트 나가기':'로그아웃');setMode('lobby');if(pendingResult)submitPending();return;}
+  if(nickname){writeLocal(NAME_KEY,nickname);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · 로그아웃';setMode('lobby');if(pendingResult)submitPending();return;}
  $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
 }
  function authError(error){if(error?.code==='NICKNAME_LOCKED')return '닉네임은 처음 설정한 이름으로 고정됩니다.';const code=String(error?.code||'');if(code.includes('popup-closed-by-user'))return 'Google 로그인 창이 닫혔습니다.';if(code.includes('popup-blocked'))return '팝업이 차단되었습니다.';if(code.includes('invalid-email'))return '이메일 주소를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일입니다. 로그인으로 전환해주세요.';if(code.includes('weak-password'))return '더 강한 비밀번호를 사용해주세요.';if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return 'Firebase Authentication에서 Google 및 이메일 로그인을 활성화해주세요.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
  $('loginForm').addEventListener('submit',async e=>{
- e.preventDefault();if(authBusy||!rankings.configured)return;authBusy=true;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent=accountCreating?'계정을 만드는 중입니다…':'로그인 중입니다…';
- try{const user=await rankings.login($('loginEmail').value.trim(),$('loginPassword').value,accountCreating);await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{$('loginPassword').value='';authBusy=false;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}
+  e.preventDefault();if(authBusy||!rankings.configured)return;authBusy=true;$('loginSubmit').disabled=$('googleBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent=accountCreating?'계정을 만드는 중입니다…':'로그인 중입니다…';
+  try{const user=await rankings.login($('loginEmail').value.trim(),$('loginPassword').value,accountCreating);await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{$('loginPassword').value='';authBusy=false;$('loginSubmit').disabled=$('googleBtn').disabled=$('createAccountBtn').disabled=false;}
  });
- $('googleBtn').addEventListener('click',async()=>{if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent='Google 로그인 중입니다…';try{const user=await rankings.loginWithGoogle();await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}});
+ $('googleBtn').addEventListener('click',async()=>{if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('loginSubmit').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent='Google 로그인 중입니다…';try{const user=await rankings.loginWithGoogle();await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('loginSubmit').disabled=$('createAccountBtn').disabled=false;}});
 $('createAccountBtn').addEventListener('click',()=>{accountCreating=!accountCreating;$('loginSubmit').textContent=accountCreating?'계정 만들기':'로그인';$('loginPassword').autocomplete=accountCreating?'new-password':'current-password';$('createAccountBtn').textContent=accountCreating?'계정이 있어요 · 로그인':'처음이신가요? 계정 만들기';$('loginStatus').textContent='';});
-$('guestBtn').addEventListener('click',async()=>{if(authBusy)return;let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}rankings.useGuest(uid);try{await selectAccount(uid,true);}catch(error){$('loginStatus').textContent=authError(error);}});
 $('nicknameForm').addEventListener('submit',async e=>{
  e.preventDefault();if(authBusy||!session||nickname)return;const name=$('nicknameInput').value.trim();if(!name||name.length>20){$('nicknameStatus').textContent='닉네임을 1~20자로 입력해주세요.';return;}
  authBusy=true;$('nicknameSubmit').disabled=$('nicknameBack').disabled=true;
- try{nickname=await rankings.setNickname(name);writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(session.local?'게스트 나가기':'로그아웃');setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
+  try{nickname=await rankings.setNickname(name);writeLocal(NAME_KEY,name);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · 로그아웃';setMode('lobby');syncLobby();if(pendingResult)submitPending();}catch(error){$('nicknameStatus').textContent=authError(error);}finally{authBusy=false;$('nicknameSubmit').disabled=$('nicknameBack').disabled=false;}
 });
-async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('login');}catch(error){toast(authError(error));}finally{authBusy=false;}}
+ async function exitAccount(){if(authBusy||submitting){toast('계정 또는 기록 처리가 끝난 뒤 다시 눌러주세요.');return;}authBusy=true;clearTimeout(retryTimer);try{await rankings.logout();session=null;practiceReturn=null;profile=null;nickname='';savedRun=pendingResult=null;runOwnsSave=false;run.restart();$('accountBtn').hidden=true;setMode('welcome');}catch(error){toast(authError(error));}finally{authBusy=false;}}
 $('enterGameBtn').addEventListener('click',()=>setMode('login'));
 $('nicknameBack').addEventListener('click',exitAccount);$('accountBtn').addEventListener('click',exitAccount);
 function openCourse(){
@@ -1105,7 +1104,7 @@ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();modeBeforeCont
 canvas.addEventListener('webglcontextrestored',()=>{try{renderer=new SkyRenderer(canvas);camSnap=true;setMode(!session?'login':modeBeforeContextLoss==='nickname'?'nickname':run.status==='practiceFinished'?'practiceResult':run.status==='finished'?'finished':['lobby','ranking','course','new','my'].includes(modeBeforeContextLoss)?'lobby':'paused');}catch{setMode('error');}});
 document.querySelectorAll('[data-cp]').forEach(e=>e.remove());for(const id of run.checkpointIds){const el=document.createElement('i');el.className='progress-dot';el.dataset.cp=id;el.style.left=run.platforms[id].progress*100+'%';document.querySelector('.progress-track').append(el);}
 syncSound();syncLobby();
-$('loginForm').hidden=$('createAccountBtn').hidden=!rankings.configured;if(!rankings.configured)$('loginExplain').textContent='온라인 로그인은 서버 연결 후 사용할 수 있습니다. 지금은 게스트로 닉네임을 정하고 플레이할 수 있으며, 기록은 이 기기에 자동 저장됩니다.';
+ $('loginForm').hidden=$('createAccountBtn').hidden=!rankings.configured;if(!rankings.configured)$('loginExplain').textContent='온라인 계정 연결이 필요합니다. Google 또는 이메일 계정으로 로그인해주세요.';
 try{renderer=new SkyRenderer(canvas);}catch(error){console.error('3D renderer:',error);setMode('error');}
 if(renderer)setMode('welcome');
 requestAnimationFrame(frame);

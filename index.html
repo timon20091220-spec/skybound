@@ -72,7 +72,7 @@ body[data-mode="paused"] #hud{z-index:4}body[data-mode="paused"] #pauseBtn{point
 <div class="eyebrow">WELCOME TO SKYBOUND</div><h2>로그인</h2><p id="loginExplain">로그인 후 닉네임을 정하고 모험을 시작하세요.<br>완주 전에도 조각·죽은 횟수·최고 단계가 자동 반영됩니다.</p>
 <form id="loginForm" class="auth-form"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" autocomplete="username" required maxlength="254" placeholder="you@example.com">
 <label for="loginPassword">비밀번호</label><input id="loginPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="비밀번호">
-<button id="loginSubmit" class="primary" type="submit">로그인</button></form><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
+ <button id="loginSubmit" class="primary" type="submit">로그인</button></form><button id="googleBtn" class="secondary">Google 계정으로 계속하기</button><p id="loginStatus" class="rank-status" role="status" aria-live="polite"></p>
 <button id="createAccountBtn" class="text-button">처음이신가요? 계정 만들기</button><button id="guestBtn" class="secondary">이 기기에서 게스트로 플레이</button><p class="tiny">게스트 기록은 이 브라우저에만 저장됩니다.</p>
 </div></section>
 <section id="nicknameScreen" class="screen overlay" hidden><div class="panel"><div class="eyebrow">YOUR ADVENTURE</div><h2>닉네임을 정해주세요</h2><p>한 번 정한 닉네임은 변경할 수 없습니다.</p><form id="nicknameForm" class="auth-form"><label for="nicknameInput">닉네임 · 1~20자</label><input id="nicknameInput" autocomplete="nickname" maxlength="20" required placeholder="하늘을 달리는 이름"><button id="nicknameSubmit" class="primary" type="submit">이 이름으로 시작</button></form><p id="nicknameStatus" class="rank-status" role="status"></p><button id="nicknameBack" class="text-button">로그인으로 돌아가기</button></div></section>
@@ -686,12 +686,8 @@ class SkyRenderer{
 }
 if(typeof module!=='undefined')module.exports={SkyMath,SkyRenderer};
 
-// Replace null with the public web-app config copied from your own Firebase project.
-// This file must never contain a service-account credential or private key.
-// To enable online accounts: provide your Firebase web app config, enable Email/Password
-// in Firebase Authentication, and deploy owner-scoped Firestore rules for rankings/{course}/scores/{uid}.
-// No project credentials are bundled; guest mode stores records on this device only.
-var SKYBOUND_FIREBASE_CONFIG=globalThis.SKYBOUND_FIREBASE_CONFIG||null;
+// This is public Firebase web-app configuration, not a service-account credential.
+var SKYBOUND_FIREBASE_CONFIG=globalThis.SKYBOUND_FIREBASE_CONFIG||{apiKey:'AIzaSyCFq6XX0P9qGZu5h5Z_OohQUHCkoi22iMA',authDomain:'project-81f0c41a-f274-4ccd-8d8.firebaseapp.com',projectId:'project-81f0c41a-f274-4ccd-8d8',storageBucket:'project-81f0c41a-f274-4ccd-8d8.firebasestorage.app',messagingSenderId:'532390439209',appId:'1:532390439209:web:463f51e6df4caf07ef2f38'};
 
 (function(root){
 'use strict';
@@ -754,6 +750,12 @@ class SkyRanking{
   async login(email,password,create=false){
     const {sdk,auth}=await this._services();
     const result=await (create?sdk.createUserWithEmailAndPassword:sdk.signInWithEmailAndPassword)(auth,email,password);
+    this.localMode=false;this._uid=result.user.uid;return result.user;
+  }
+  async loginWithGoogle(){
+    const {sdk,auth}=await this._services(),provider=new sdk.GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    const result=await sdk.signInWithPopup(auth,provider);
     this.localMode=false;this._uid=result.user.uid;return result.user;
   }
   useGuest(uid){this.localMode=true;this._uid=uid;}
@@ -1052,11 +1054,12 @@ async function selectAccount(uid,local,displayName=''){
  if(nickname){writeLocal(NAME_KEY,nickname);$('accountBtn').hidden=false;$('accountBtn').textContent=nickname+' · '+(local?'게스트 나가기':'로그아웃');setMode('lobby');if(pendingResult)submitPending();return;}
  $('nicknameInput').value=nickname;$('nicknameStatus').textContent='';setMode('nickname');$('nicknameInput').focus();
 }
-function authError(error){if(error?.code==='NICKNAME_LOCKED')return '닉네임은 처음 설정한 이름으로 고정됩니다.';const code=String(error?.code||'');if(code.includes('invalid-email'))return '이메일 주소를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일입니다. 로그인으로 전환해주세요.';if(code.includes('weak-password'))return '더 강한 비밀번호를 사용해주세요.';if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return '온라인 계정 연결이 아직 준비되지 않았습니다.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
-$('loginForm').addEventListener('submit',async e=>{
+ function authError(error){if(error?.code==='NICKNAME_LOCKED')return '닉네임은 처음 설정한 이름으로 고정됩니다.';const code=String(error?.code||'');if(code.includes('popup-closed-by-user'))return 'Google 로그인 창이 닫혔습니다.';if(code.includes('popup-blocked'))return '팝업이 차단되었습니다.';if(code.includes('invalid-email'))return '이메일 주소를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일입니다. 로그인으로 전환해주세요.';if(code.includes('weak-password'))return '더 강한 비밀번호를 사용해주세요.';if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('too-many-requests'))return '요청이 많습니다. 잠시 후 다시 시도해주세요.';if(code.includes('operation-not-allowed')||code.includes('CONFIG'))return 'Firebase Authentication에서 Google 및 이메일 로그인을 활성화해주세요.';return '연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.';}
+ $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();if(authBusy||!rankings.configured)return;authBusy=true;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent=accountCreating?'계정을 만드는 중입니다…':'로그인 중입니다…';
  try{const user=await rankings.login($('loginEmail').value.trim(),$('loginPassword').value,accountCreating);await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{$('loginPassword').value='';authBusy=false;$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}
-});
+ });
+ $('googleBtn').addEventListener('click',async()=>{if(authBusy)return;authBusy=true;$('googleBtn').disabled=$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=true;$('loginStatus').textContent='Google 로그인 중입니다…';try{const user=await rankings.loginWithGoogle();await selectAccount(user.uid,false,user.displayName||'');$('loginStatus').textContent='';}catch(error){$('loginStatus').textContent=authError(error);}finally{authBusy=false;$('googleBtn').disabled=$('loginSubmit').disabled=$('guestBtn').disabled=$('createAccountBtn').disabled=false;}});
 $('createAccountBtn').addEventListener('click',()=>{accountCreating=!accountCreating;$('loginSubmit').textContent=accountCreating?'계정 만들기':'로그인';$('loginPassword').autocomplete=accountCreating?'new-password':'current-password';$('createAccountBtn').textContent=accountCreating?'계정이 있어요 · 로그인':'처음이신가요? 계정 만들기';$('loginStatus').textContent='';});
 $('guestBtn').addEventListener('click',async()=>{if(authBusy)return;let uid=readLocal('skybound-guest-id-v1');if(typeof uid!=='string'){uid=globalThis.crypto?.randomUUID?.()||'guest-'+Date.now()+'-'+Math.random().toString(36).slice(2);writeLocal('skybound-guest-id-v1',uid);}rankings.useGuest(uid);try{await selectAccount(uid,true);}catch(error){$('loginStatus').textContent=authError(error);}});
 $('nicknameForm').addEventListener('submit',async e=>{

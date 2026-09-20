@@ -7,7 +7,7 @@ service cloud.firestore {
     }
 
     function ownsPlayer(playerId) {
-      return signedIn() && (playerId == request.auth.uid || playerId.endsWith('_' + request.auth.uid));
+      return signedIn() && (playerId == request.auth.uid || playerId.matches('.*_' + request.auth.uid));
     }
 
     function validRecord(version) {

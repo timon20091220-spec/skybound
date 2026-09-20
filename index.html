@@ -704,6 +704,7 @@ function normalizeNickname(value){
   if(nickname.length<1||nickname.length>20)throw codedError('INVALID_RECORD','Nickname must contain 1 to 20 characters.');
   return nickname;
 }
+function playerDocId(nickname,uid){return encodeURIComponent(nickname)+'_'+uid;}
 function integer(value,min,max,name){if(!Number.isSafeInteger(value)||value<min||value>max)throw codedError('INVALID_RECORD',`${name} is invalid.`);return value;}
 function validateRecord(input){
   if(!input||typeof input!=='object')throw codedError('INVALID_RECORD','Run result is required.');
@@ -738,7 +739,7 @@ function serviceError(error){
 }
 
 class SkyRanking{
-  constructor(config,options={}){this.config=config;this.configured=hasConfig(config);this._uid=null;this.localMode=!this.configured;this._loadSdk=options.loadSdk||loadFirebaseSdk;this._servicesPromise=null;}
+  constructor(config,options={}){this.config=config;this.configured=hasConfig(config);this._uid=null;this._nickname='';this.localMode=!this.configured;this._loadSdk=options.loadSdk||loadFirebaseSdk;this._servicesPromise=null;}
   get uid(){return this._uid;}
   _requireConfig(){if(!this.configured)throw codedError('CONFIG_MISSING','Firebase rankings are not configured.');}
   async _services(){
@@ -771,27 +772,29 @@ class SkyRanking{
   async getNickname(fallback=''){
     if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
     if(this.localMode){const old=localStorage.getItem('skybound-locked-name:'+this._uid);if(old)return old;if(fallback)return this.setNickname(fallback);return '';}
-    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-     const doc=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(doc.exists()&&doc.data().nickname)return doc.data().nickname;
+     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+     const rows=await sdk.getDocs(sdk.query(sdk.collection(db,'players'),sdk.where('uid','==',user.uid),sdk.limit(1)));if(!rows.empty){this._nickname=rows.docs[0].data().nickname;return this._nickname;}
+     const legacy=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(legacy.exists()&&legacy.data().nickname){this._nickname=legacy.data().nickname;return this._nickname;}
      return '';
   }
   async setNickname(name){
     name=normalizeNickname(name);if(!this._uid)throw codedError('AUTH_REQUIRED','Login required');
     if(this.localMode){const key='skybound-locked-name:'+this._uid,old=localStorage.getItem(key);if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');localStorage.setItem(key,old||name);return old||name;}
-    const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    const ref=sdk.doc(db,'players',user.uid);
-      return sdk.runTransaction(db,async tx=>{const doc=await tx.get(ref),old=doc.exists()?doc.data().nickname:'';if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');if(!doc.exists())tx.set(ref,{nickname:name,createdAt:sdk.serverTimestamp()});return old||name;});
+     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
+     const ref=sdk.doc(db,'players',playerDocId(name,user.uid)),legacyRef=sdk.doc(db,'players',user.uid),existing=await sdk.getDoc(legacyRef);
+     if(existing.exists()&&existing.data().nickname&&existing.data().nickname!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');
+     const result=await sdk.runTransaction(db,async tx=>{const doc=await tx.get(ref),legacyDoc=await tx.get(legacyRef),old=doc.exists()?doc.data().nickname:(legacyDoc.exists()?legacyDoc.data().nickname:'');if(old&&old!==name)throw codedError('NICKNAME_LOCKED','Nickname cannot be changed');if(!doc.exists())tx.set(ref,{uid:user.uid,nickname:name,createdAt:sdk.serverTimestamp()});if(legacyDoc.exists())tx.delete(legacyRef);return old||name;});this._nickname=result;return result;
    }
   async loadProgress(){
     if(this.localMode||!this._uid)return null;
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    try{const snapshot=await sdk.getDoc(sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION));return snapshot.exists()?snapshot.data():null;}
+     try{if(!this._nickname)return null;const snapshot=await sdk.getDoc(sdk.doc(db,'players',playerDocId(this._nickname,user.uid),'progress',COURSE_VERSION));if(snapshot.exists())return snapshot.data();const legacy=await sdk.getDoc(sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION));return legacy.exists()?legacy.data():null;}
     catch(error){throw serviceError(error);}
   }
   async saveProgress(progress){
     if(this.localMode||!this._uid)return false;
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    try{await sdk.setDoc(sdk.doc(db,'players',user.uid,'progress',COURSE_VERSION),{...progress,uid:user.uid,courseVersion:COURSE_VERSION,updatedAt:sdk.serverTimestamp()},{merge:true});return true;}
+     try{if(!this._nickname)return false;await sdk.setDoc(sdk.doc(db,'players',playerDocId(this._nickname,user.uid),'progress',COURSE_VERSION),{...progress,uid:user.uid,nickname:this._nickname,courseVersion:COURSE_VERSION,updatedAt:sdk.serverTimestamp()},{merge:true});return true;}
     catch(error){throw serviceError(error);}
   }
   async logout(){if(!this.localMode){const {sdk,auth}=await this._services();await sdk.signOut(auth);}this._uid=null;}
@@ -819,15 +822,15 @@ class SkyRanking{
       window.dispatchEvent(new Event('skybound-records'));return {saved:true,best:stored,local:true};
     }
     const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
-    const ref=sdk.doc(db,'rankings',COURSE_VERSION,'records',user.uid);
+     const ref=sdk.doc(db,'rankings',COURSE_VERSION,'records',playerDocId(candidate.nickname,user.uid)),legacyRef=sdk.doc(db,'rankings',COURSE_VERSION,'records',user.uid);
     try{
       return await sdk.runTransaction(db,async transaction=>{
-        const snapshot=await transaction.get(ref),existing=snapshot.exists()?snapshot.data():null;
-        const profile=await transaction.get(sdk.doc(db,'players',user.uid));if(!profile.exists()||profile.data().nickname!==candidate.nickname)throw codedError('NICKNAME_LOCKED','Nickname does not match');
+         const snapshot=await transaction.get(ref),legacySnapshot=await transaction.get(legacyRef),existing=snapshot.exists()?snapshot.data():null;
+         const profile=await transaction.get(sdk.doc(db,'players',playerDocId(candidate.nickname,user.uid)));if(!profile.exists()||profile.data().uid!==user.uid||profile.data().nickname!==candidate.nickname)throw codedError('NICKNAME_LOCKED','Nickname does not match');
          const next={uid:user.uid,...candidate};if(existing&&compareRecords(publicRecord(existing),next)<=0)return {saved:false,best:publicRecord(existing)};
          const timestamp=sdk.serverTimestamp();
         const stored={uid:user.uid,...candidate,createdAt:existing?.createdAt||timestamp,updatedAt:timestamp};
-        transaction.set(ref,stored);
+         transaction.set(ref,stored);if(legacySnapshot.exists())transaction.delete(legacyRef);
         return {saved:true,best:publicRecord(stored)};
       });
     }catch(error){throw serviceError(error);}

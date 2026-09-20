@@ -41,19 +41,23 @@ service cloud.firestore {
         && request.resource.data.scoreMs == request.resource.data.timeMs + request.resource.data.falls * 3000;
     }
 
-    match /players/{uid} {
-      allow read, write: if signedIn() && uid == request.auth.uid;
+    match /players/{playerId} {
+      allow read: if signedIn() && (resource.data.uid == request.auth.uid || playerId == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.nickname == resource.data.nickname;
+      allow delete: if signedIn() && (playerId == request.auth.uid || resource.data.uid == request.auth.uid);
     }
 
-    match /players/{uid}/progress/{version} {
-      allow read, write: if signedIn() && uid == request.auth.uid;
+    match /players/{playerId}/progress/{version} {
+      allow read: if signedIn() && resource.data.uid == request.auth.uid;
+      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid;
     }
 
-    match /rankings/{version}/records/{uid} {
+    match /rankings/{version}/records/{playerId} {
       allow read, list: if true;
-      allow create: if signedIn() && uid == request.auth.uid && validRecord(version);
-      allow update: if signedIn() && uid == request.auth.uid && validRecord(version);
-      allow delete: if false;
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && validRecord(version);
+      allow update: if signedIn() && request.resource.data.uid == request.auth.uid && validRecord(version);
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
     }
   }
 }

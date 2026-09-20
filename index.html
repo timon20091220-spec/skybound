@@ -745,7 +745,7 @@ class SkyRanking{
     this._requireConfig();
      if(!this._servicesPromise)this._servicesPromise=this._loadSdk().then(async sdk=>{
        const app=sdk.getApps().find(candidate=>candidate.name===APP_NAME)||sdk.initializeApp(this.config,APP_NAME),auth=sdk.getAuth(app);
-       await sdk.setPersistence(auth,sdk.browserLocalPersistence);
+       try{await sdk.setPersistence(auth,sdk.browserLocalPersistence);}catch(error){console.warn('Auth persistence unavailable',error);}
        return {sdk,auth,db:sdk.getFirestore(app)};
     }).catch(error=>{this._servicesPromise=null;throw serviceError(error);});
     return this._servicesPromise;
@@ -758,6 +758,8 @@ class SkyRanking{
   async loginWithGoogle(){
     const {sdk,auth}=await this._services(),provider=new sdk.GoogleAuthProvider();
     provider.setCustomParameters({prompt:'select_account'});
+    const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(ios){await sdk.signInWithRedirect(auth,provider);return null;}
     const result=await sdk.signInWithPopup(auth,provider);
     this.localMode=false;this._uid=result.user.uid;return result.user;
   }

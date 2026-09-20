@@ -774,7 +774,7 @@ class SkyRanking{
     if(this.localMode){const old=localStorage.getItem('skybound-locked-name:'+this._uid);if(old)return old;if(fallback)return this.setNickname(fallback);return '';}
      const services=await this._services(),user=await this._authenticate(services),{sdk,db}=services;
      const rows=await sdk.getDocs(sdk.query(sdk.collection(db,'players'),sdk.where('uid','==',user.uid),sdk.limit(1)));if(!rows.empty){this._nickname=rows.docs[0].data().nickname;return this._nickname;}
-     const legacy=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(legacy.exists()&&legacy.data().nickname){this._nickname=legacy.data().nickname;return this._nickname;}
+     const legacy=await sdk.getDoc(sdk.doc(db,'players',user.uid));if(legacy.exists()&&legacy.data().nickname){return this.setNickname(legacy.data().nickname);}
      return '';
   }
   async setNickname(name){

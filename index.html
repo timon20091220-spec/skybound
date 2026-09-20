@@ -1005,8 +1005,8 @@ async function submitPending(){
   retryDelay=2000;$('pendingBox').hidden=!pendingResult;
   $('submitStatus').textContent=$('pendingStatus').textContent=result.saved?(result.local?'이 기기 랭킹에 자동 등록했습니다.':'온라인 랭킹에 자동 등록했습니다.'):'기록을 갱신했습니다.';
   
- }catch(error){
-  if(session?.key===owner){$('submitStatus').textContent=$('pendingStatus').textContent=errorText(error)+' 자동 재시도 대기 중';retryTimer=setTimeout(submitPending,retryDelay);retryDelay=Math.min(60000,retryDelay*2);}
+  }catch(error){
+   if(session?.key===owner){if(error?.code==='PERMISSION_DENIED'){retryTimer=0;$('submitStatus').textContent=$('pendingStatus').textContent=errorText(error);return;}$('submitStatus').textContent=$('pendingStatus').textContent=errorText(error)+' 자동 재시도 대기 중';retryTimer=setTimeout(submitPending,retryDelay);retryDelay=Math.min(60000,retryDelay*2);}
  }finally{submitting=false;if(pendingResult&&session?.key===owner&&retryTimer===null)retryTimer=setTimeout(submitPending,1000);}
 }
 function loadProfile(){

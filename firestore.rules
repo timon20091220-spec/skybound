@@ -6,6 +6,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function ownsPlayer(playerId) {
+      return signedIn() && (playerId == request.auth.uid || playerId.endsWith('_' + request.auth.uid));
+    }
+
     function validRecord(version) {
       return request.resource.data is map
         && version is string
@@ -42,15 +46,15 @@ service cloud.firestore {
     }
 
     match /players/{playerId} {
-      allow read: if signedIn() && (resource.data.uid == request.auth.uid || playerId == request.auth.uid);
+      allow read: if ownsPlayer(playerId) || (signedIn() && resource.data.uid == request.auth.uid);
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
       allow update: if signedIn() && request.resource.data.uid == request.auth.uid && request.resource.data.nickname == resource.data.nickname;
       allow delete: if signedIn() && (playerId == request.auth.uid || resource.data.uid == request.auth.uid);
     }
 
     match /players/{playerId}/progress/{version} {
-      allow read: if signedIn() && resource.data.uid == request.auth.uid;
-      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow read: if ownsPlayer(playerId) || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create, update: if ownsPlayer(playerId) && request.resource.data.uid == request.auth.uid;
     }
 
     match /rankings/{version}/records/{playerId} {
